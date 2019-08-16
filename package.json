@@ -1,0 +1,40 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Given list of tasks create a schedule for the user to use ",
+  "main": "lib/schedule.js",
+  "directories": {
+    "test": "lib/test"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "flow-bin": "^0.105.2",
+    "luxon": "^1.17.2"
+  },
+  "devDependencies": {
+    "flow-remove-types": "^2.105.2"
+  },
+  "scripts": {
+    "test": "mocha lib/test",
+    "build": "flow-remove-types src/ -d lib/",
+    "prepublish": "npm run build",
+    "flow": "flow"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/randomicons/find-time"
+  },
+  "keywords": [
+    "time",
+    "table",
+    "auto",
+    "task",
+    "scheduler"
+  ],
+  "author": "Sriram Bhat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/randomicons/find-time/issues"
+  },
+  "homepage": "https://github.com/randomicons/find-time#readme"
+}
