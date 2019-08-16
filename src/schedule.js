@@ -35,14 +35,25 @@ module.exports = {
   Task: Task,
   time: (tasks: Array<Task>, curTime: DateTime, opts: SchedOpts) => {
     const {maxTaskTime, breakTime, endTime, startTime} = opts
+    // Currently only support hour and not minutes for start and end times
     if (curTime.hour < startTime.hour) {
       curTime = curTime.set({hour: startTime.hour})
     }
+
+    // Sort by deadline
+    tasks.sort((a, b) => {
+      a = a.deadline
+      b = b.deadline
+      if (a == null && b == null) return 0
+      if (b == null) return -1
+      if (a == null) return 1
+      return a.valueOf().compareTo(b)
+    })
     const sched: Array<Sched> = []
     let curUsedTime = Duration.fromObject({})
     for (let val of tasks) {
       if (curTime.hour === endTime.hour) {
-
+        curTime = curTime.set({hour: startTime.hour, day: startTime.day + 1})
       }
       let dur = val.dur
       while (curUsedTime.plus(dur).minus(maxTaskTime).valueOf() >= 0) {
