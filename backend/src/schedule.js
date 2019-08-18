@@ -9,6 +9,7 @@ class Task {
   name: string
   dur: Duration
   deadline: ?DateTime
+  compareTo: Function
 
   constructor(name: string, dur: Interval, deadline: ?DateTime = null) {
     this.name = name

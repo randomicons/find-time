@@ -1,24 +1,32 @@
 const assert = require('assert')
 const {DateTime, Duration, Interval} = require("luxon")
-const sched = require('../schedule')
-const Task = sched.Task
+const sched = require('./index').schedule
 
 function createDur(mins) {
   return Duration.fromObject({minutes: mins})
 }
 
+class Task {
+  constructor(name, dur, deadline) {
+    this.name = name
+    this.dur = dur
+    this.deadline = deadline
+  }
+}
+
+
 describe("Schedule", () => {
   describe("Schedule", () => {
     it("Tasks should be scheduled but with ideal break times", () => {
       //Check that there is no continuous task of more than 45 mins
-      const ints = sched.time([new Task('A', createDur(20)), new Task("B", createDur(30)),
-          new Task("C", createDur(50)), new Task("D", createDur(60))], DateTime.local(0),
+      const ints = sched([new Task('A', createDur(20)), new Task("B", createDur(30)),
+          new Task("C", createDur(50)), new Task("D", createDur(60))], DateTime.local(),
         {
           maxTaskTime: createDur(45),
           breakTime: createDur(15),
           startTime: DateTime.fromObject({hour: 0}),
           endTime: DateTime.fromObject({hour: 6})
-        })
+        }).payload
       let prevInt = ints[0].interval
       for (const val of ints.slice(1)) {
         console.log(val.interval.toISO())
@@ -33,32 +41,35 @@ describe("Schedule", () => {
     })
 
     it("Tasks shouldn't go past the days time limits", () => {
-        const ints = sched.time([new Task('A', createDur(20)), new Task("B", createDur(30)),
-            new Task("C", createDur(50)), new Task("D", createDur(60))], DateTime.fromObject({hour: 0}),
+        const startTime = 8
+        const endTime = 23
+        const ints = sched([new Task('A', createDur(20)), new Task("B", createDur(30)),
+            new Task("C", createDur(50)), new Task("D", createDur(60))], DateTime.local(),
           {
             maxTaskTime: createDur(45),
             breakTime: createDur(15),
-            startTime: DateTime.fromObject({hour: 0}),
-            endTime: DateTime.fromObject({hour: 6})
-          })
+            startTime: DateTime.fromObject({hour: startTime}),
+            endTime: DateTime.fromObject({hour: endTime})
+          }).payload
 
         const containingInt = Interval.fromDateTimes(DateTime.fromObject({hour: 0}), DateTime.fromObject({hour: 6}))
-        for (const int of ints) {
-          console.log(int.interval.toISO())
-          assert(containingInt.engulfs(int.interval), int.name + " " + int.interval.toISO() + " is outside of " + containingInt.toISO())
+        for (const val of ints) {
+          console.log(val.interval.toISO())
+          assert(val.interval.start.hour >= startTime && val.interval.end.hour < endTime,
+            val.name + " " + val.interval.toISO() + " is outside of " + containingInt.toISO())
         }
       }
     )
 
     it("Tasks should be done before the deadline", () => {
-      const ints = sched.time([new Task('A', createDur(20)), new Task("B", createDur(30)),
+      const ints = sched([new Task('A', createDur(20)), new Task("B", createDur(30)),
           new Task("C", createDur(50)), new Task("D", createDur(60))], DateTime.fromObject({hour: 0}),
         {
           maxTaskTime: createDur(45),
           breakTime: createDur(15),
           startTime: DateTime.fromObject({hour: 0}),
           endTime: DateTime.fromObject({hour: 6})
-        })
+        }).payload
 
       for (const val of ints) {
         if (val.deadline)
