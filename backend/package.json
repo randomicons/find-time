@@ -7,18 +7,26 @@
     "test": "lib/test"
   },
   "dependencies": {
+    "aws-sdk": "^2.517.0",
     "express": "^4.17.1",
     "flow-bin": "^0.105.2",
-    "luxon": "^1.17.2"
+    "jest": "^24.9.0",
+    "luxon": "^1.17.2",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "flow-remove-types": "^2.105.2"
+  },
+  "jest": {
+    "automock": false,
+    "testEnvironment": "node"
   },
   "scripts": {
     "test": "mocha lib/test",
     "build": "flow-remove-types src/ -d lib/",
     "prepublish": "npm run build",
-    "flow": "flow"
+    "flow": "flow",
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",
