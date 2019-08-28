@@ -20,19 +20,15 @@ export async function createUser(user: User) {
     })
 }
 
-export async function loginUser(userDetails: User): Promise<{ error?: any, token?: string }> {
-    let user: any
-    try {
-        const user: any = await userModel.get({userId: userDetails.userId})
-        console.log(user)
-    } catch (e) {
+export async function loginUser(userDetails: User): Promise<{ error?: any, out?: { token: string, expire: number } }> {
+    const user: any = await userModel.get({userId: userDetails.userId})
+    if (!user)
         return {error: "Account not found"}
-    }
     const match = await bcrypt.compare(userDetails.password, user.password)
     if (match) {
         const payload = {userId: userDetails.userId}
-        const options = {expiresIn: '1d'}
-        return {token: jwt.sign(payload, process.env.JWT_SECRET as string, options)}
+        const options = {expiresIn: 60 * 60 * 60 * 24}//'1d'
+        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET as string, options), expire: options.expiresIn}}
     } else {
         return {error: "Password incorrect"}
     }

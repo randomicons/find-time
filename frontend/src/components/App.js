@@ -10,8 +10,8 @@ function App() {
     <Router>
       <div>
         <Route exact path="/" component={Login}/>
-        <ListTasks/>
-        <Schedule/>
+        <Route exact path="/tasks/" component={Schedule}/>
+        <Route exact path="/tasks/" component={ListTasks}/>
       </div>
     </Router>
   )

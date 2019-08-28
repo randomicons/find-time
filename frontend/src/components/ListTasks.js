@@ -2,6 +2,7 @@ import React from 'react'
 import Task from './Task'
 import {connect} from "react-redux"
 import AddTask from "./AddTask"
+import {withRouter} from "react-router-dom"
 
 
 class ListTasks extends React.Component {
@@ -21,4 +22,4 @@ const mapStateToProps = state => {
   return {tasks: state.tasks}
 }
 
-export default connect(mapStateToProps)(ListTasks)
+export default withRouter(connect(mapStateToProps)(ListTasks))

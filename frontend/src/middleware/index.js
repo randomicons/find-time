@@ -9,3 +9,7 @@ export const logger = store => next => action => {
   console.groupEnd()
   return result
 }
+
+export const addToken = store => next => action => {
+
+}

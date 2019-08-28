@@ -16,16 +16,16 @@ class ConnectedLogin extends React.Component {
       userId: this.state.email,
       dateCreated: DateTime.local().toISO(),
       password: this.state.password
-    })
-      .then(res => console.log(res))
+    }).then(res => console.log(res)).then(() => this.props.history.push('/tasks'))
+    event.preventDefault()
   }
 
   login = event => {
     axios.post('/users/login', {
       userId: this.state.email,
       password: this.state.password
-    })
-      .then(res => console.log(res))
+    }).then(res => console.log(res)).then(() => this.props.history.push('/tasks'))
+    event.preventDefault()
   }
 
   render() {

@@ -3,6 +3,7 @@ import React from 'react'
 import {DateTime, Duration, Interval} from 'luxon'
 import {connect} from "react-redux"
 import {intervalToStr} from "../util/date-util"
+import {withRouter} from "react-router-dom"
 
 export type STask = { name: string, interval: Interval, deadline: ?DateTime, id: string }
 export type SchedOpts = { startTime: DateTime, endTime: DateTime, maxTaskTime: Duration, breakTime: Duration }
@@ -24,5 +25,5 @@ const mapStateToProps = state => {
   return {schedTasks: state.schedTasks}
 }
 
-export default connect(mapStateToProps)(ConnectedSchedule)
+export default withRouter(connect(mapStateToProps)(ConnectedSchedule))
 
