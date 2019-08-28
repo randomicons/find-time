@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import {DateTime} from 'luxon'
 
 class ConnectedLogin extends React.Component {
 
@@ -11,7 +12,19 @@ class ConnectedLogin extends React.Component {
   submit = event => {
     this.validateEmail()
     //hash password and etc
-    axios.post('/users/create', {email: this.state.email, password: this.state.password})
+    axios.post('/users/create', {
+      userId: this.state.email,
+      dateCreated: DateTime.local().toISO(),
+      password: this.state.password
+    })
+      .then(res => console.log(res))
+  }
+
+  login = event => {
+    axios.post('/users/login', {
+      userId: this.state.email,
+      password: this.state.password
+    })
       .then(res => console.log(res))
   }
 
@@ -27,6 +40,7 @@ class ConnectedLogin extends React.Component {
       </label>
       <br/>
       <input onClick={this.submit} type='button' value="Create New User"/>
+      <input onClick={this.login} type='button' value="Login"/>
     </form>
   }
 }
