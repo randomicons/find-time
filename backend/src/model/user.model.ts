@@ -1,6 +1,6 @@
-import {Schema} from 'dynamoose'
+import {Schema, SchemaOptions} from 'dynamoose'
 
-export const userSchema = () => {
+export const userSchema = (options?: SchemaOptions) => {
     return new Schema({
         userId: {
             type: String,
@@ -16,5 +16,5 @@ export const userSchema = () => {
             type: String,
             required: true
         }
-    })
+    }, options)
 }

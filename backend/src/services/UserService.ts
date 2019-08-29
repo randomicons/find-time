@@ -3,8 +3,10 @@ import jwt = require("jsonwebtoken");
 import {userModel} from '../constants';
 
 
-type User = {
-    userId: String, dateCreated: String, password: String
+interface User {
+    userId: String,
+    dateCreated: String,
+    password: String
 }
 
 const saltRounds = 10
@@ -28,7 +30,7 @@ export async function loginUser(userDetails: User): Promise<{ error?: any, out?:
     if (match) {
         const payload = {userId: userDetails.userId}
         const options = {expiresIn: 60 * 60 * 60 * 24}//'1d'
-        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET as string, options), expire: options.expiresIn}}
+        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, options), expire: options.expiresIn}}
     } else {
         return {error: "Password incorrect"}
     }

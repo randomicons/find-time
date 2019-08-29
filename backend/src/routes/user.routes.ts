@@ -2,7 +2,7 @@ import {createUser, loginUser} from "../services/UserService";
 import {Request, Response} from 'express'
 
 const express = require("express")
-const router = express.Router()
+export const userRoutes = express.Router()
 const dynamoose = require('dynamoose')
 const constants = require('../constants')
 
@@ -12,7 +12,7 @@ dynamoose.AWS.config.update({
 });
 
 dynamoose.local(); // This defaults to "http://localhost:8000"
-router.post('/create', (req: Request, res: Response) => {
+userRoutes.post('/create', (req: Request, res: Response) => {
     createUser(req.body)
         .then(() => res.send("account created"))
         .catch(err => {
@@ -22,7 +22,7 @@ router.post('/create', (req: Request, res: Response) => {
 
 })
 
-router.post('/login', async (req: Request, res: Response) => {
+userRoutes.post('/login', async (req: Request, res: Response) => {
     const {error, out} = await loginUser(req.body)
     if (error) res.status(401).send(error)
     else if (out) {
@@ -31,5 +31,4 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 })
 
-module.exports = router
 

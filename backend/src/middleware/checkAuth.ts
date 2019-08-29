@@ -1,7 +1,8 @@
-import jwt from 'express-jwt';
+import jwt = require('express-jwt');
 import {Request} from 'express'
+import {config} from 'dotenv'
 
-
+config()
 const getTokenFromHeader = (req: Request) => {
     return req.cookies.token
     // if (
@@ -13,9 +14,8 @@ const getTokenFromHeader = (req: Request) => {
     // return null;
 };
 
-export const isAuth = jwt({
-    secret: process.env.jwtSecret as string, // The _secret_ to sign the JWTs
-    userProperty: 'token', // Use req.token to store the JWT
+export const checkAuth = jwt({
+    secret: process.env.JWT_SECRET!, // The _secret_ to sign the JWTs
     getToken: getTokenFromHeader, // How to extract the JWT from the request
 });
 
