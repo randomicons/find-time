@@ -1,9 +1,10 @@
 import React, {SyntheticEvent} from 'react'
-import {addTask} from "../actions"
+import {addTask} from "../actions/tasks"
 import {connect} from 'react-redux'
-import {TaskState, TaskType} from "./Task"
 import {createDurMin} from "../util/date-util"
 import {Dispatch} from "redux";
+import {TaskState} from "./Task";
+import {TaskType} from "../interfaces";
 
 
 class ConnectedAddTask extends React.Component<any, TaskState> {

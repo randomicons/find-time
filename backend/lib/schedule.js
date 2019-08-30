@@ -15,7 +15,7 @@ class Task {
     this.deadline = deadline
     this.dur = dur
     this.compareTo = (task      ) => {
-      return this.dur.minus(task.dur).valueOf()
+      return this.dur.minus(task.duration).valueOf()
     }
   }
 
@@ -55,7 +55,7 @@ module.exports = {
       if (curTime.hour === endTime.hour) {
         curTime = curTime.set({hour: startTime.hour, day: startTime.day + 1})
       }
-      let dur = val.dur
+      let dur = val.duration
       while (curUsedTime.plus(dur).minus(maxTaskTime).valueOf() >= 0) {
         const usedTime = maxTaskTime.minus(curUsedTime)
         dur = dur.minus(usedTime)

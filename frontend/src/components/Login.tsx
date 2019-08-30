@@ -1,34 +1,30 @@
 import React, {SyntheticEvent} from 'react'
-import axios from 'axios'
-import {DateTime} from 'luxon'
+import {connect} from "react-redux";
+import {Redirect} from "react-router";
+import {MainState} from "../interfaces";
+import {Dispatch} from "redux";
+import {createUser, login} from "../actions/users";
 
-class Login extends React.Component<{ history: Array<string> }, { email: string, password: string }> {
+class Login extends React.Component<{ dispatch: Dispatch, loggedIn: boolean }, { email: string, password: string }> {
 
-    validateEmail = () => {
+    validateFields = () => {
         const re = /\S+@\S+\.\S+/
-        return this.state.email && re.test(this.state.email)
+        return this.state.email && re.test(this.state.email) && this.state.password
     }
     submit = (event: SyntheticEvent) => {
-        this.validateEmail()
-        //hash password and etc
-        axios.post('/users/create', {
-            userId: this.state.email,
-            dateCreated: DateTime.local().toISO(),
-            password: this.state.password
-        }).then(res => console.log(res)).then(() => this.props.history.push('/tasks'))
+        if (this.validateFields()) {
+            this.props.dispatch<any>(createUser(this.state.email, this.state.password))
+        }
         event.preventDefault()
     }
 
     login = (event: SyntheticEvent) => {
-        axios.post('/users/login', {
-            userId: this.state.email,
-            password: this.state.password
-        }).then(res => console.log(res)).then(() => this.props.history.push('/tasks'))
+        this.props.dispatch<any>(login(this.state.email, this.state.password))
         event.preventDefault()
     }
 
     render() {
-        return <form onSubmit={this.submit}>
+        return this.props.loggedIn ? <Redirect to={'/tasks'}/> : <form onSubmit={this.submit}>
             <label>Email
                 <input type='text' onChange={(e) => this.setState({email: e.currentTarget.value})}/>
             </label>
@@ -44,4 +40,6 @@ class Login extends React.Component<{ history: Array<string> }, { email: string,
     }
 }
 
-export default Login
+export default connect((state: MainState) => {
+    return {loggedIn: state.loggedIn}
+})(Login)

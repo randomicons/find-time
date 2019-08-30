@@ -1,6 +1,6 @@
 const assert = require('assert')
 const {DateTime, Duration, Interval} = require("luxon")
-const sched = require('./index').schedule
+const sched = require('./tasks').schedule
 
 function createDur(mins) {
   return Duration.fromObject({minutes: mins})

@@ -1,28 +1,35 @@
 import React from 'react'
-import Task, {TaskType} from './Task'
 import {connect} from "react-redux"
 import AddTask from "./AddTask"
-import {MainState} from "../reducers";
+import {MainState, Tasks} from "../interfaces";
+import {Dispatch} from "redux";
+import {getTasks} from "../actions/tasks";
+import {Redirect} from "react-router";
+import Task from './Task';
 
-export interface Tasks {
-    [name: string]: TaskType
-}
 
-class ListTasks extends React.Component<{ tasks: Tasks }> {
+class ListTasks extends React.Component<{ tasks: Tasks, loggedIn: boolean, dispatch: Dispatch }> {
     render() {
-        return <div>
-            {Object.values(this.props.tasks).map(val =>
-                <li key={val.name}><Task name={val.name} dur={val.dur} deadline={val.deadline}/>
-                </li>
-            )
-            }
-            <AddTask/>
-        </div>
+        return !this.props.loggedIn ?
+            <Redirect to={'/'}/> :
+            <div>
+                {
+                    Object.values(this.props.tasks).map(val =>
+                        <li key={val.name}><Task name={val.name} duration={val.duration} deadline={val.deadline}/>
+                        </li>
+                    )
+                }
+                <AddTask/>
+            </div>
+    }
+
+    componentDidMount(): void {
+        this.props.dispatch<any>(getTasks())
     }
 }
 
 const mapStateToProps = (state: MainState) => {
-    return {tasks: state.tasks}
+    return {tasks: state.tasks, loggedIn: state.loggedIn}
 }
 
 export default connect(mapStateToProps)(ListTasks)

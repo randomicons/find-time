@@ -1,28 +1,15 @@
 import React from 'react'
-import {DateTime, Duration, Interval} from 'luxon'
 import {connect} from "react-redux"
 import {intervalToStr} from "../util/date-util"
-import {MainState} from '../reducers'
+import {MainState, STask} from "../interfaces";
 
-export interface STask {
-    name: string,
-    interval: Interval,
-    deadline?: DateTime
-}
-
-export interface SchedOpts {
-    startTime: DateTime,
-    endTime: DateTime,
-    maxTaskTime: Duration,
-    breakTime: Duration
-}
 
 class ConnectedSchedule extends React.Component<{ schedTasks: Array<STask> }> {
     render() {
         return <div>
             {
                 this.props.schedTasks && this.props.schedTasks.map(stask =>
-                    <li key={stask.name}>name: {stask.name}, interval: {intervalToStr(stask.interval)},
+                    <li key={stask.interval.toISO()}> name: {stask.name}, interval: {intervalToStr(stask.interval)},
                         deadline: {stask.deadline}</li>
                 )
             }

@@ -22,7 +22,7 @@ export async function createUser(user: User) {
     })
 }
 
-export async function loginUser(userDetails: User): Promise<{ error?: any, out?: { token: string, expire: number } }> {
+export async function loginUser(userDetails: User): Promise<{ error?: any, out?: { token: string, maxAge: number } }> {
     const user: any = await userModel.get({userId: userDetails.userId})
     if (!user)
         return {error: "Account not found"}
@@ -30,7 +30,7 @@ export async function loginUser(userDetails: User): Promise<{ error?: any, out?:
     if (match) {
         const payload = {userId: userDetails.userId}
         const options = {expiresIn: 60 * 60 * 60 * 24}//'1d'
-        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, options), expire: options.expiresIn}}
+        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, options), maxAge: options.expiresIn}}
     } else {
         return {error: "Password incorrect"}
     }

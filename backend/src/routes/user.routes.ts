@@ -26,7 +26,7 @@ userRoutes.post('/login', async (req: Request, res: Response) => {
     const {error, out} = await loginUser(req.body)
     if (error) res.status(401).send(error)
     else if (out) {
-        res.cookie("token", out.token, {maxAge: out.expire})
+        res.cookie("token", out.token, {maxAge: out.maxAge})
         res.status(201).send(out);
     }
 })

@@ -1,9 +1,6 @@
 import React, {Component, SyntheticEvent} from 'react'
-import {DateTime, Duration} from 'luxon'
+import {TaskType} from "../interfaces";
 
-export type TaskType = {
-    name: string, dur: Duration, deadline?: DateTime,
-}
 export type TaskState = { name: string, dur: number }
 
 
@@ -25,7 +22,7 @@ class Task extends Component<TaskType, TaskState> {
             <input placeholder="name" value={this.props.name} onChange={(e) => this.setState({name: e.target.value})}/>
             <label>
                 Duration:
-                <input type='number' value={this.props.dur.as("minutes")} onChange={this.validateDur}/>
+                <input type='number' value={this.props.duration.as("minutes")} onChange={this.validateDur}/>
                 minutes
             </label>
             {/*<label>*/}
