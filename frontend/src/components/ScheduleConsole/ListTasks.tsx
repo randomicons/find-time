@@ -1,9 +1,8 @@
 import React from 'react'
 import {connect} from "react-redux"
 import AddTask from "./AddTask"
-import {MainState, Tasks} from "../interfaces";
+import {MainState, Tasks} from "../../interfaces";
 import {Dispatch} from "redux";
-import {getTasks} from "../actions/tasks";
 import {Redirect} from "react-router";
 import Task from './Task';
 
@@ -23,9 +22,6 @@ class ListTasks extends React.Component<{ tasks: Tasks, loggedIn: boolean, dispa
             </div>
     }
 
-    componentDidMount(): void {
-        this.props.dispatch<any>(getTasks())
-    }
 }
 
 const mapStateToProps = (state: MainState) => {

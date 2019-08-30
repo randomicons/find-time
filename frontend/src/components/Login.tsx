@@ -8,9 +8,11 @@ import {createUser, login} from "../actions/users";
 class Login extends React.Component<{ dispatch: Dispatch, loggedIn: boolean }, { email: string, password: string }> {
 
     validateFields = () => {
-        const re = /\S+@\S+\.\S+/
-        return this.state.email && re.test(this.state.email) && this.state.password
+        // const re = /\S+@\S+\.\S+/
+        // return this.state.email && re.test(this.state.email) && this.state.password
+        return this.state.email && this.state.password
     }
+
     submit = (event: SyntheticEvent) => {
         if (this.validateFields()) {
             this.props.dispatch<any>(createUser(this.state.email, this.state.password))

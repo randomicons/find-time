@@ -1,26 +1,25 @@
 import React, {SyntheticEvent} from 'react'
-import {addTask} from "../actions/tasks"
+import {addTask} from "../../actions/tasks"
 import {connect} from 'react-redux'
-import {createDurMin} from "../util/date-util"
+import {createDurMin} from "../../util/date-util"
 import {Dispatch} from "redux";
 import {TaskState} from "./Task";
-import {TaskType} from "../interfaces";
 
 
-class ConnectedAddTask extends React.Component<any, TaskState> {
+class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskState> {
     handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
-        if (this.state.name != null && this.state.dur != null) {
-            this.props.addTask({name: this.state.name, dur: createDurMin(this.state.dur)})
+        if (this.state.name != null && this.state.duration != null) {
+            this.props.dispatch<any>(addTask({name: this.state.name, duration: createDurMin(this.state.duration)}))
             this.formRef!.reset()
-            this.setState({name: "", dur: -1})
+            this.setState({name: "", duration: -1})
         }
     }
 
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
         //TODO: change color on bad value
         if (parseInt(event.currentTarget.value) > 0)
-            this.setState({dur: parseInt(event.currentTarget.value)})
+            this.setState({duration: parseInt(event.currentTarget.value)})
         else {
             event.preventDefault()
         }
@@ -40,10 +39,5 @@ class ConnectedAddTask extends React.Component<any, TaskState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        addTask: (task: TaskType) => dispatch<any>(addTask(task))
-    }
-}
-const AddTask = connect(null, mapDispatchToProps)(ConnectedAddTask)
+const AddTask = connect()(ConnectedAddTask)
 export default AddTask

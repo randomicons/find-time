@@ -1,17 +1,14 @@
 import React, {Component, SyntheticEvent} from 'react'
-import {TaskType} from "../interfaces";
+import {TaskType} from "../../interfaces";
 
-export type TaskState = { name: string, dur: number }
+export type TaskState = { name: string, duration: number }
 
 
 class Task extends Component<TaskType, TaskState> {
-    // constructor(props) {
-    //   super(props)
-    // }
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
         //TODO: change color on bad value
         if (parseInt(event.currentTarget.value) > 0)
-            this.setState({dur: parseInt(event.currentTarget.value)})
+            this.setState({duration: parseInt(event.currentTarget.value)})
         else {
             event.preventDefault()
         }
@@ -19,7 +16,8 @@ class Task extends Component<TaskType, TaskState> {
 
     render() {
         return <div>
-            <input placeholder="name" value={this.props.name} onChange={(e) => this.setState({name: e.target.value})}/>
+            {/*<input placeholder="name" value={this.props.name} onChange={(e) => this.setState({name: e.target.value})}/>*/}
+            <label> name: <span>{this.props.name}</span></label>
             <label>
                 Duration:
                 <input type='number' value={this.props.duration.as("minutes")} onChange={this.validateDur}/>

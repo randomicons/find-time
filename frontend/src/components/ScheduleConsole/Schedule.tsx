@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from "react-redux"
-import {intervalToStr} from "../util/date-util"
-import {MainState, STask} from "../interfaces";
+import {intervalToStr} from "../../util/date-util"
+import {MainState, STask} from "../../interfaces";
 
 
 class ConnectedSchedule extends React.Component<{ schedTasks: Array<STask> }> {
