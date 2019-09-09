@@ -1,0 +1,20 @@
+@import "../../css/config";
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #71bbb5;
+    margin: .3em 1em;
+  }
+
+  label {
+    margin: 1em;
+    color: $primary-color-light;
+  }
+
+}

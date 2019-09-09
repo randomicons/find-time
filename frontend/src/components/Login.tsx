@@ -4,6 +4,7 @@ import {Redirect} from "react-router";
 import {MainState} from "../interfaces";
 import {Dispatch} from "redux";
 import {createUser, login} from "../actions/users";
+import styles from './Login.module.scss'
 
 class Login extends React.Component<{ dispatch: Dispatch, loggedIn: boolean }, { email: string, password: string }> {
 
@@ -26,19 +27,22 @@ class Login extends React.Component<{ dispatch: Dispatch, loggedIn: boolean }, {
     }
 
     render() {
-        return this.props.loggedIn ? <Redirect to={'/tasks'}/> : <form onSubmit={this.submit}>
-            <label>Email
-                <input type='text' onChange={(e) => this.setState({email: e.currentTarget.value})}/>
-            </label>
-            <br/>
-            <label>
-                Password
-                <input type='password' onChange={(e) => this.setState({password: e.currentTarget.value})}/>
-            </label>
-            <br/>
-            <input onClick={this.submit} type='button' value="Create New User"/>
-            <input onClick={this.login} type='button' value="Login"/>
-        </form>
+        return this.props.loggedIn ? <Redirect to={'/tasks'}/> :
+            <div className={styles.container}>
+                <h2>Login</h2>
+                <form className={styles.form} onSubmit={this.submit}>
+                    <label>Email
+                        <input type='text' onChange={(e) => this.setState({email: e.currentTarget.value})}/>
+                    </label>
+                    <label>
+                        Password
+                        <input type='password' onChange={(e) => this.setState({password: e.currentTarget.value})}/>
+                    </label>
+                    <br/>
+                    <button onClick={this.submit} type='button'> Sign up</button>
+                    <button onClick={this.login} type='button'> Login</button>
+                </form>
+            </div>
     }
 }
 

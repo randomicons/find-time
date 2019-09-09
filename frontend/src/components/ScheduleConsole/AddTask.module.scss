@@ -1,0 +1,11 @@
+@import '../../css/config';
+
+.task {
+  input[type="number"] {
+    width: 6ch;
+  }
+
+  label {
+    color: $primary-color-light;
+  }
+}

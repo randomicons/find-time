@@ -4,14 +4,18 @@ import {intervalToStr} from "../../util/date-util"
 import {MainState, STask} from "../../interfaces";
 
 
-class ConnectedSchedule extends React.Component<{ schedTasks: Array<STask> }> {
+class Schedule extends React.Component<{ schedTasks: Array<STask> }> {
     render() {
-        return <div>
+        const out: Array<any> = []
+        for (const task of this.props.schedTasks) {
+            out.push(
+                <li>{task.name} <span>from </span> {intervalToStr(task.interval)}
+                </li>
+            )
+        }
+        return <div className={styles.container}>
             {
-                this.props.schedTasks && this.props.schedTasks.map(stask =>
-                    <li key={stask.interval.toISO()}> name: {stask.name}, interval: {intervalToStr(stask.interval)},
-                        deadline: {stask.deadline}</li>
-                )
+                this.props.schedTasks && out
             }
         </div>
     }
@@ -20,5 +24,5 @@ class ConnectedSchedule extends React.Component<{ schedTasks: Array<STask> }> {
 const mapStateToProps = (state: MainState) => {
     return {schedTasks: state.schedTasks}
 }
-export default connect(mapStateToProps)(ConnectedSchedule)
+export default connect(mapStateToProps)(Schedule)
 

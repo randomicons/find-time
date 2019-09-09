@@ -1,38 +1,76 @@
 import React, {SyntheticEvent} from 'react'
 import {addTask} from "../../actions/tasks"
 import {connect} from 'react-redux'
-import {createDurMin} from "../../util/date-util"
 import {Dispatch} from "redux";
 import {TaskState} from "./Task";
+import {DateTime, Duration} from "luxon";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import styles from './AddTask.module.scss'
+
+// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 
 class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskState> {
+    constructor(props: { dispatch: Dispatch }) {
+        super(props)
+        this.state = {
+            name: "",
+            duration: Duration.fromObject({})
+        }
+    }
+
+    handleDeadlineChange = (date: Date) => {
+        this.setState({deadline: DateTime.fromJSDate(date)})
+    }
     handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
         if (this.state.name != null && this.state.duration != null) {
-            this.props.dispatch<any>(addTask({name: this.state.name, duration: createDurMin(this.state.duration)}))
+            this.props.dispatch<any>(addTask({
+                name: this.state.name,
+                duration: this.state.duration,
+                deadline: this.state.deadline
+            }))
             this.formRef!.reset()
-            this.setState({name: "", duration: -1})
+            this.setState({name: "", duration: Duration.fromObject({})})
         }
+    }
+
+    handleMinChange = (min: number) => {
+        if (isNaN(min)) min = 0
+        this.setState({duration: this.state.duration.set({minute: min})});
+    }
+
+    handleHourChange = (hour: number) => {
+        if (isNaN(hour)) hour = 0
+        this.setState({duration: this.state.duration.set({hour: hour})})
     }
 
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
         //TODO: change color on bad value
-        if (parseInt(event.currentTarget.value) > 0)
-            this.setState({duration: parseInt(event.currentTarget.value)})
-        else {
-            event.preventDefault()
-        }
+        // if (parseInt(event.currentTarget.value) > 0)
+        //     this.setState({duration: parseInt(event.currentTarget.value)})
+        // else {
+        //     event.preventDefault()
+        // }
     }
     private formRef?: HTMLFormElement | null = null;
 
+
     render() {
-        return <form ref={(el) => this.formRef = el} onSubmit={this.handleSubmit}>
+        return <form ref={(el) => this.formRef = el} onSubmit={this.handleSubmit} className={styles.task}>
             <input placeholder="name" onChange={(e) => this.setState({name: e.target.value})}/>
             <label>
-                Duration:
-                <input type='number' onChange={this.validateDur}/>
+                takes
+                <input type='number' min='0' onChange={e => this.handleHourChange(parseInt(e.target.value))}/>
+                hours
+                <input type='number' min='0' onChange={e => this.handleMinChange(parseInt(e.target.value))}/>
                 minutes
+            </label>
+            <label>
+                & is due by
+                <DatePicker selected={this.state.deadline ? this.state.deadline.toJSDate() : null}
+                            onChange={this.handleDeadlineChange} placeholderText="mm/dd/yyyy"/>
             </label>
             <button type="submit" onClick={this.handleSubmit}>ADD</button>
         </form>

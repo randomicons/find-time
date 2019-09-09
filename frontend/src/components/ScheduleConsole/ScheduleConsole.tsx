@@ -5,6 +5,7 @@ import {Dispatch} from "redux";
 import {LOG_OFF} from "../../constants/action";
 import {getTasks} from "../../actions/tasks";
 import {connect} from "react-redux";
+import styles from './ScheduleConsole.module.scss'
 
 const LogOut = function (props: { dispatch: Dispatch }) {
     return <button onClick={() => props.dispatch({type: LOG_OFF})}>LOG OUT</button>
@@ -17,7 +18,7 @@ class ScheduleConsole extends React.Component<{ dispatch: Dispatch, loggedIn: bo
     }
 
     render() {
-        return <div>
+        return <div className={styles.container}>
             <LogOut dispatch={this.props.dispatch}/>
             <Schedule/>
             <ListTasks/>

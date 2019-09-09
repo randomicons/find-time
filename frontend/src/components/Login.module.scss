@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+  width: 50%;
+  height: 100vh;
+
+  h2 {
+    text-align: center;
+    font-size: 2em;
+  }
+}
+
+.form {
+  margin: 0 auto;
+
+  label {
+    margin: .5em;
+    display: block;
+  }
+
+  input {
+    margin: 1em;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #71bbb5
+  }
+}

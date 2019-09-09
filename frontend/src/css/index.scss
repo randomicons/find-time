@@ -1,0 +1,32 @@
+@import "_reset.sass";
+@import "config.scss";
+
+body {
+  @extend %font;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input {
+  @extend %font;
+}
+
+.button {
+  @extend %font;
+  background: $secondary-color;
+  border-radius: .2rem;
+  border: none;
+  color: white;
+  min-width: 3em;
+}
+
+.button:hover {
+  transition: background .2s ease-in;
+  background: #59928d;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  monospace;
+}

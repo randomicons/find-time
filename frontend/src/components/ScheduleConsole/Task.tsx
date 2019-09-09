@@ -1,32 +1,40 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {TaskType} from "../../interfaces";
+import {DateTime, Duration} from "luxon";
+import styles from "./Task.module.scss"
 
-export type TaskState = { name: string, duration: number }
+export type TaskState = { name: string, duration: Duration, deadline?: DateTime }
 
 
 class Task extends Component<TaskType, TaskState> {
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
         //TODO: change color on bad value
-        if (parseInt(event.currentTarget.value) > 0)
-            this.setState({duration: parseInt(event.currentTarget.value)})
-        else {
-            event.preventDefault()
-        }
+        // if (parseInt(event.currentTarget.value) > 0)
+        // this.setState({duration: parseInt(event.currentTarget.value)})
+        // else {
+        //     event.preventDefault()
+        // }
     }
 
     render() {
-        return <div>
+        const dur = this.props.duration.as("minutes")
+        return <div className={styles.task}>
             {/*<input placeholder="name" value={this.props.name} onChange={(e) => this.setState({name: e.target.value})}/>*/}
-            <label> name: <span>{this.props.name}</span></label>
+            <span> {this.props.name}</span>
             <label>
-                Duration:
-                <input type='number' value={this.props.duration.as("minutes")} onChange={this.validateDur}/>
+                takes
+                <input type='number' style={{width: (2 + dur.toString().length) + "ch"}} value={dur}
+                       onChange={this.validateDur}/>
                 minutes
             </label>
-            {/*<label>*/}
-            {/*  Deadline:*/}
-            {/*  <input type='number' onChange={(e) => this.setState({dur: e.target.value})}/>*/}
-            {/*</label>*/}
+            {
+                this.props.deadline && <label>
+                  due by
+                  <input style={{width: (2 + this.props.deadline.toString().length) + "ch"}}
+                         value={this.props.deadline.toLocaleString()}
+                         onChange={this.validateDur}/>
+                </label>
+            }
         </div>
     }
 }
