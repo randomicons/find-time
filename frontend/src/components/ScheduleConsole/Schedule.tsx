@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from "react-redux"
 import {intervalToStr} from "../../util/date-util"
 import {MainState, STask} from "../../interfaces";
-
+import styles from './Schedule.module.scss'
 
 class Schedule extends React.Component<{ schedTasks: Array<STask> }> {
     render() {

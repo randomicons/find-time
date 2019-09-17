@@ -4,12 +4,7 @@ import {Request, Response} from 'express'
 const express = require("express")
 export const userRoutes = express.Router()
 const dynamoose = require('dynamoose')
-const constants = require('../constants')
 
-
-dynamoose.AWS.config.update({
-    region: constants.aws_region,
-});
 
 dynamoose.local(); // This defaults to "http://localhost:8000"
 userRoutes.post('/create', (req: Request, res: Response) => {

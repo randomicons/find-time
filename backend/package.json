@@ -41,7 +41,7 @@
     "test": "mocha lib/test",
     "start": "npm run build:live",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts"
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec DEBUG=true 'ts-node' src/app.ts"
   },
   "repository": {
     "type": "git",
