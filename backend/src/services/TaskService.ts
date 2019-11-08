@@ -1,3 +1,8 @@
+import aws from 'aws-sdk'
+import * as taskModel from "../model/task.model"
+
+const docClient = new aws.DynamoDB.DocumentClient()
+
 interface Task {
     name: string,
     userEmail: string,
@@ -5,9 +10,9 @@ interface Task {
     deadline?: number
 }
 
-export async function addTask(taskInput: Task, userId: String): Promise<{ err?: String }> {
+export async function addTask(taskInput: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-        const val = await new taskModel({...taskInput, userId}).save({condition: })
+        const val = await docClient.put(taskModel.createTask(userEmail, taskInput.name, taskInput.duration, taskInput.deadline)).promise()
         console.log(val)
     } catch (err) {
         return {err}
@@ -15,7 +20,7 @@ export async function addTask(taskInput: Task, userId: String): Promise<{ err?: 
     return {}
 }
 
-export async function getTasks(userId: String): Promise<{ err?: string, data?: any }> {
+export async function getTasks(userId: string): Promise<{ err?: string, data?: any }> {
     try {
         //TODO find out how to use queryAll
         let tempData = await taskModel.query({userId: {eq: userId}}).exec()

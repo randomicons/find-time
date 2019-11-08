@@ -24,7 +24,7 @@ import {dbTypes} from "../constants";
 
 export function createTask(userEmail: string, taskName: string, duration: number, deadline?: number) {
     return {
-        Table: process.env.DB_TABLE!,
+        TableName: process.env.DB_TABLE!,
         Item: {
             userEmail, duration, deadline,
             type: dbTypes.task + "_" + taskName
@@ -35,7 +35,7 @@ export function createTask(userEmail: string, taskName: string, duration: number
 
 export function getTask(userEmail: string, taskName: string) {
     return {
-        Table: process.env.DB_TABLE!,
+        TableName: process.env.DB_TABLE!,
         Key: {
             userEmail,
             type: dbTypes.task + "_" + taskName
