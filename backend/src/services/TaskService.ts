@@ -1,15 +1,13 @@
-import {taskModel} from "../constants";
-
 interface Task {
-    taskId: String
-    userId: String
-    duration: String
-    deadline?: String
+    name: string,
+    userEmail: string,
+    duration: number
+    deadline?: number
 }
 
 export async function addTask(taskInput: Task, userId: String): Promise<{ err?: String }> {
     try {
-        const val = await new taskModel({...taskInput, userId}).save({condition: "attribute_not_exists(taskId)"})
+        const val = await new taskModel({...taskInput, userId}).save({condition: })
         console.log(val)
     } catch (err) {
         return {err}
