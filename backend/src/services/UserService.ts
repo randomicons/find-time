@@ -31,12 +31,12 @@ export async function createUser(user: User) {
 }
 
 export async function loginUser(userDetails: User): Promise<{ error?: any, out?: { token: string, maxAge: number } }> {
-    const user: any = await userModel.get({userId: userDetails.userId})
+    const user: any = await docClient.get(userModel.getUser(userDetails.email)).promise()
     if (!user)
         return {error: "Account not found"}
     const match = await bcrypt.compare(userDetails.password, user.password)
     if (match) {
-        const payload = {userId: userDetails.userId}
+        const payload = {userId: userDetails.email}
         return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, jwtOptions), maxAge: jwtOptions.expiresIn}}
     } else {
         return {error: "Password incorrect"}

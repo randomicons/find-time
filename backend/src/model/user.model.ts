@@ -18,6 +18,7 @@
 // }
 
 import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
+import * as constants from "../constants";
 import PutItemInput = DocumentClient.PutItemInput;
 
 export function createUser(email: string, password: string): PutItemInput {
@@ -25,10 +26,20 @@ export function createUser(email: string, password: string): PutItemInput {
         TableName: process.env.DB_TABLE!,
         Item: {
             userEmail: email,
-            type: "userInfo",
+            type: constants.dbTypes.userInfo,
             password: password,
             dateCreated: new Date().getUTCDate()
         },
         ConditionExpression: "attribute_not_exists(userId)",
+    }
+}
+
+export function getUser(email: string) {
+    return {
+        TableName: process.env.DB_TABLE!,
+        Key: {
+            userEmail: email,
+            type: constants.dbTypes.userInfo
+        }
     }
 }
