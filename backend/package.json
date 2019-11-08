@@ -11,7 +11,6 @@
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.1.0",
-    "dynamoose": "^1.11.0",
     "express": "^4.17.1",
     "express-jwt": "latest",
     "flow-bin": "^0.105.2",
@@ -30,8 +29,7 @@
     "@types/express": "^4.17.1",
     "@types/express-jwt": "0.0.42",
     "@types/jsonwebtoken": "^8.3.3",
-    "@types/morgan": "^1.7.37",
-    "flow-remove-types": "^2.105.2"
+    "@types/morgan": "^1.7.37"
   },
   "jest": {
     "automock": false,

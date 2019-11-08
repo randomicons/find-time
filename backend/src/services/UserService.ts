@@ -1,24 +1,32 @@
 import bcrypt = require('bcrypt');
 import jwt = require("jsonwebtoken");
-import {userModel} from '../constants';
-
+import aws from "aws-sdk"
+import * as userModel from "../model/user.model"
 
 interface User {
-    userId: String,
-    dateCreated: String,
-    password: String
+    email: string,
+    dateCreated: string,
+    password: string
 }
 
 const saltRounds = 10
+const jwtOptions = {expiresIn: 60 * 60 * 60 * 24}//'1d'
+const docClient = new aws.DynamoDB.DocumentClient()
 
 export async function createUser(user: User) {
-    return await bcrypt.hash(user.password, saltRounds).then(async hash => {
+    return bcrypt.hash(user.password, saltRounds).then(async hash => {
         delete user.password
-        await new userModel({...user, password: hash}).save({condition: "attribute_not_exists(userId)"}, (err) => {
-            if (err) {
-                return err
+        await docClient.put(userModel.createUser(user.email, user.password)).promise()
+
+        const payload = {userId: user.email}
+        return {
+            out: {
+                token: jwt.sign(payload, process.env.JWT_SECRET!, jwtOptions),
+                maxAge: jwtOptions.expiresIn
             }
-        })
+        }
+    }).catch((err) => {
+        return {err}
     })
 }
 
@@ -29,8 +37,7 @@ export async function loginUser(userDetails: User): Promise<{ error?: any, out?:
     const match = await bcrypt.compare(userDetails.password, user.password)
     if (match) {
         const payload = {userId: userDetails.userId}
-        const options = {expiresIn: 60 * 60 * 60 * 24}//'1d'
-        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, options), maxAge: options.expiresIn}}
+        return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, jwtOptions), maxAge: jwtOptions.expiresIn}}
     } else {
         return {error: "Password incorrect"}
     }

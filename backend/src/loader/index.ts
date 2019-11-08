@@ -3,18 +3,24 @@ import {json, urlencoded} from "body-parser";
 import {userRoutes} from "../routes/user.routes";
 import {taskRoutes} from "../routes/task.routes";
 import express from "express";
-import logger = require("morgan");
-import dynamoose = require('dynamoose');
-import cookieParser = require("cookie-parser");
+import * as logger from "morgan"
+import * as cookieParser from "cookie-parser"
 
+const AWS = require("aws-sdk");
+
+AWS.config.update({
+    region: process.env.AWS_REGION,
+})
+if (process.env.DEBUG) {
+    AWS.config.update({
+        endpoint: "http://localhost:" + process.env.DEBUG_DYNAMO_PORT
+    })
+}
 export default function (app: express.Application) {
-    dynamoose.AWS.config.update({
-        region: constants.aws_region,
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    });
-    if (process.env.DEBUG)
-        dynamoose.local()
+    if (process.env.DEBUG) {
+        console.log("debug")
+    }
+
     app.use(logger("dev"))
     app.use(json())
     app.use(urlencoded({extended: false}))

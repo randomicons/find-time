@@ -1,6 +1,6 @@
 import {port} from "./config"
 import init from "./loader"
-import express = require('express');
+import * as express from 'express'
 
 require('dotenv').config()
 const app = express()

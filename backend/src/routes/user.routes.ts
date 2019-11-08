@@ -3,18 +3,21 @@ import {Request, Response} from 'express'
 
 const express = require("express")
 export const userRoutes = express.Router()
-const dynamoose = require('dynamoose')
 
 
-dynamoose.local(); // This defaults to "http://localhost:8000"
 userRoutes.post('/create', (req: Request, res: Response) => {
     createUser(req.body)
-        .then(() => res.send("account created"))
-        .catch(err => {
-            console.log(err);
-            res.status(500).send("error account not created" + err)
+        .then((result) => {
+            const {err, out} = result as any
+            if (err) {
+                console.log(err);
+                res.status(500).send("error account not created" + err)
+            }
+            res.cookie("token", out.token, {maxAge: out.maxAge})
+            res.send("account created")
         })
-
+        .catch(err => {
+        })
 })
 
 userRoutes.post('/login', async (req: Request, res: Response) => {
