@@ -20,12 +20,16 @@ export async function addTask(taskInput: Task, userEmail: string): Promise<{ err
     return {}
 }
 
-export async function getTasks(userId: string): Promise<{ err?: string, data?: any }> {
+export async function getTasks(userEmail: string): Promise<{ err?: string, data?: any }> {
     try {
         //TODO find out how to use queryAll
-        let tempData = await taskModel.query({userId: {eq: userId}}).exec()
+        let tempData = await docClient.query(taskModel.getAllTasks(userEmail)).promise()
         const data: any = {}
-        tempData.forEach((val) => {
+        // TODO is this even an error if there are no tasks?
+        if (tempData.Count == 0) {
+            return {err: "No tasks found"}
+        }
+        tempData.Items!.forEach((val) => {
             const tempVal = val.originalItem() as any
             delete tempVal.userID
             data[tempVal.taskId] = val.originalItem()

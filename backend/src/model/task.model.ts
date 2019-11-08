@@ -42,3 +42,17 @@ export function getTask(userEmail: string, taskName: string) {
         }
     }
 }
+
+export function getAllTasks(userEmail: string) {
+    return {
+        //TODO use projection expression?
+        TableName: process.env.DB_TABLE!,
+        KeyConditionExpression: "#email = :email",
+        ExpressionAttributeNames: {
+            "#email": "userEmail"
+        },
+        ExpressionAttributeValues: {
+            "userEmail": userEmail
+        }
+    }
+}
