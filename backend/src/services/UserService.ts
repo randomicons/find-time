@@ -2,12 +2,8 @@ import bcrypt = require('bcrypt');
 import jwt = require("jsonwebtoken");
 import * as userModel from "../model/user.model"
 import {docClient} from "../constants";
+import {User} from "../types/"
 
-interface User {
-    email: string,
-    dateCreated: string,
-    password: string
-}
 
 const saltRounds = 10
 const jwtOptions = {expiresIn: 60 * 60 * 60 * 24}//'1d'

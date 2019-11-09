@@ -1,18 +1,10 @@
 import * as taskModel from "../model/task.model"
 import {docClient} from "../constants";
-
-
-interface Task {
-    name: string,
-    userEmail: string,
-    duration: number
-    deadline?: number
-}
+import {Task} from "../types";
 
 export async function addTask(taskInput: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-        const val = await docClient.put(taskModel.createTask(userEmail, taskInput.name, taskInput.duration, taskInput.deadline)).promise()
-        console.log(val)
+        const response = await docClient.put(taskModel.createTask(userEmail, taskInput.name, taskInput.duration, taskInput.deadline)).promise()
     } catch (err) {
         return {err}
     }
@@ -21,7 +13,6 @@ export async function addTask(taskInput: Task, userEmail: string): Promise<{ err
 
 export async function getTasks(userEmail: string): Promise<{ err?: string, data?: any }> {
     try {
-        //TODO find out how to use queryAll
         let tempData = await docClient.query(taskModel.getAllTasks(userEmail)).promise()
         const data: any = {}
         // TODO is this even an error if there are no tasks?
