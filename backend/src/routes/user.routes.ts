@@ -10,7 +10,7 @@ userRoutes.post('/create', (req: Request, res: Response) => {
         .then((result) => {
             const {err, out} = result as any
             if (err) {
-                console.log(err);
+                console.log("req: " + JSON.stringify(req.body) + "\n" + err)
                 res.status(500).send("error account not created" + err)
             }
             res.cookie("token", out.token, {maxAge: out.maxAge})
@@ -21,8 +21,8 @@ userRoutes.post('/create', (req: Request, res: Response) => {
 })
 
 userRoutes.post('/login', async (req: Request, res: Response) => {
-    const {error, out} = await loginUser(req.body)
-    if (error) res.status(401).send(error)
+    const {err, out} = await loginUser(req.body)
+    if (err) res.status(401).send(err)
     else if (out) {
         res.cookie("token", out.token, {maxAge: out.maxAge})
         res.status(201).send(out);

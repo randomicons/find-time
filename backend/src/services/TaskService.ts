@@ -1,7 +1,6 @@
-import aws from 'aws-sdk'
 import * as taskModel from "../model/task.model"
+import {docClient} from "../constants";
 
-const docClient = new aws.DynamoDB.DocumentClient()
 
 interface Task {
     name: string,

@@ -30,7 +30,7 @@ export function createUser(email: string, password: string): PutItemInput {
             password: password,
             dateCreated: new Date().getUTCDate()
         },
-        ConditionExpression: "attribute_not_exists(userId)",
+        ConditionExpression: "attribute_not_exists(userEmail)",
     }
 }
 

@@ -5,20 +5,21 @@ import {taskRoutes} from "../routes/task.routes";
 import express from "express";
 import * as logger from "morgan"
 import * as cookieParser from "cookie-parser"
+import createTable from "../model/DBSchema";
 
 const AWS = require("aws-sdk");
 
-AWS.config.update({
-    region: process.env.AWS_REGION,
-})
-if (process.env.DEBUG) {
-    AWS.config.update({
-        endpoint: "http://localhost:" + process.env.DEBUG_DYNAMO_PORT
-    })
-}
 export default function (app: express.Application) {
+    AWS.config.update({
+        region: process.env.AWS_REGION,
+    })
     if (process.env.DEBUG) {
-        console.log("debug")
+        AWS.config.update({
+            endpoint: "http://localhost:" + process.env.DEBUG_DYNAMO_PORT
+        })
+    }
+    if (process.env.DEBUG) {
+        console.log("RUNNING DEBUG MODE")
     }
 
     app.use(logger("dev"))
@@ -28,4 +29,5 @@ export default function (app: express.Application) {
     app.use('/users', userRoutes)
     app.use('/tasks', taskRoutes)
     constants.init()
+    createTable()
 }
