@@ -28,7 +28,7 @@ export function createUser(email: string, password: string): PutItemInput {
             userEmail: email,
             type: constants.dbTypes.userInfo,
             password: password,
-            dateCreated: Date.now().valueOf()
+            dateCreated: Date.now().toString()
         },
         ConditionExpression: "attribute_not_exists(userEmail)",
     }

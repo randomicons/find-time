@@ -1,11 +1,11 @@
 export interface Task {
     name: string,
-    duration: number
-    deadline?: number
+    duration: string
+    deadline?: string
 }
 
 export interface User {
     email: string,
-    dateCreated: number,
+    dateCreated: string,
     password: string
 }

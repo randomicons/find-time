@@ -21,13 +21,14 @@
 // }
 
 import {dbTypes} from "../constants";
+import {Task} from "../types";
 
-export function createTask(userEmail: string, taskName: string, duration: number, deadline?: number) {
+export function createTask(userEmail: string, taskDetails: Task) {
     return {
         TableName: process.env.DB_TABLE!,
         Item: {
-            userEmail, duration, deadline,
-            type: dbTypes.task + "_" + taskName
+            userEmail, duration: taskDetails.duration, deadline: taskDetails.deadline,
+            type: dbTypes.task + "_" + taskDetails.name
         },
         ConditionExpression: "attribute_not_exists(taskName)"
     }
@@ -47,12 +48,14 @@ export function getAllTasks(userEmail: string) {
     return {
         //TODO use projection expression?
         TableName: process.env.DB_TABLE!,
-        KeyConditionExpression: "#email = :email",
+        KeyConditionExpression: "#email = :email and begins_with(#type, :type)",
         ExpressionAttributeNames: {
-            "#email": "userEmail"
+            "#email": "userEmail",
+            "#type": "type"
         },
         ExpressionAttributeValues: {
-            "userEmail": userEmail
+            ":email": userEmail,
+            ":type": dbTypes.task
         }
     }
 }

@@ -31,7 +31,7 @@ export async function loginUser(userDetails: User): Promise<{ err?: any, out?: {
         return {err: "Account not found"}
     const match = await bcrypt.compare(userDetails.password, user.Item.password)
     if (match) {
-        const payload = {userId: userDetails.email}
+        const payload = {email: userDetails.email}
         return {out: {token: jwt.sign(payload, process.env.JWT_SECRET!, jwtOptions), maxAge: jwtOptions.expiresIn}}
     } else {
         return {err: "Password incorrect"}

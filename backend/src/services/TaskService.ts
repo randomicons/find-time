@@ -2,27 +2,28 @@ import * as taskModel from "../model/task.model"
 import {docClient} from "../constants";
 import {Task} from "../types";
 
-export async function addTask(taskInput: Task, userEmail: string): Promise<{ err?: string }> {
+export async function addTask(task: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-        const response = await docClient.put(taskModel.createTask(userEmail, taskInput.name, taskInput.duration, taskInput.deadline)).promise()
+
+        const response = await docClient.put(taskModel.createTask(userEmail, task)).promise()
+        console.log(task)
     } catch (err) {
         return {err}
     }
     return {}
 }
 
-export async function getTasks(userEmail: string): Promise<{ err?: string, data?: any }> {
+export async function getTasks(userEmail: string): Promise<{ err?: string, data?: Task[] }> {
     try {
         let tempData = await docClient.query(taskModel.getAllTasks(userEmail)).promise()
-        const data: any = {}
         // TODO is this even an error if there are no tasks?
-        if (tempData.Count == 0) {
+        if (!tempData.Items) {
             return {err: "No tasks found"}
         }
+        const data: Task[] = []
         tempData.Items!.forEach((val) => {
-            const tempVal = val.originalItem() as any
-            delete tempVal.userID
-            data[tempVal.taskId] = val.originalItem()
+            delete val.userEmail
+            data.push({name: val.type.split("_").slice(1).join("_"), deadline: val.deadline, duration: val.duration})
         })
         console.log(data)
         return {data}
