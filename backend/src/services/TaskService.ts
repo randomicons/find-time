@@ -4,9 +4,18 @@ import {Task} from "../types";
 
 export async function addTask(task: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-
         const response = await docClient.put(taskModel.createTask(userEmail, task)).promise()
         console.log(task)
+    } catch (err) {
+        return {err}
+    }
+    return {}
+}
+
+export async function deleteTask(task: Task, userEmail: string): Promise<{ err?: string }> {
+    try {
+        const response = await docClient.delete(taskModel.getTask(userEmail, task.name)).promise()
+        console.log(response)
     } catch (err) {
         return {err}
     }

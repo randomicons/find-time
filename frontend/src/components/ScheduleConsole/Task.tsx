@@ -3,10 +3,15 @@ import {TaskType} from "../../interfaces";
 import {DateTime, Duration} from "luxon";
 import styles from "./Task.module.scss"
 
-export type TaskState = { name: string, duration: Duration, deadline?: DateTime }
+export type TaskState = { name: string, duration: Duration, deadline?: DateTime, hovered: boolean }
 
 
 class Task extends Component<TaskType, TaskState> {
+    constructor(props: TaskType) {
+        super(props)
+        this.state = {...this.props, hovered: false}
+    }
+
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
         //TODO: change color on bad value
         // if (parseInt(event.currentTarget.value) > 0)
@@ -16,9 +21,14 @@ class Task extends Component<TaskType, TaskState> {
         // }
     }
 
+
+    toggleDelete = () => {
+        this.setState({hovered: !this.state.hovered})
+    }
+
     render() {
         const dur = this.props.duration.as("minutes")
-        return <div className={styles.task}>
+        return <div className={styles.task} onMouseEnter={this.toggleDelete} onMouseLeave={this.toggleDelete}>
             {/*<input placeholder="name" value={this.props.name} onChange={(e) => this.setState({name: e.target.value})}/>*/}
             <span> {this.props.name}</span>
             <label>
@@ -35,6 +45,7 @@ class Task extends Component<TaskType, TaskState> {
                          onChange={this.validateDur}/>
                 </label>
             }
+            {this.state.hovered && <button className={styles.delete}>x</button>}
         </div>
     }
 }
