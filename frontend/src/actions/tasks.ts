@@ -7,8 +7,10 @@ import {schedule} from "./schedule";
 import {MainState, Tasks, TaskType} from "../interfaces";
 import {DateTime, Duration} from "luxon";
 
-interface ServerTask {
-    [taskId: string]: { userId: string, taskId: string, duration: string, deadline?: string }
+interface RawTask {
+    name: string,
+    duration: string,
+    deadline?: string,
 }
 
 export function addTask(task: TaskType): ThunkAction<Promise<any>, MainState, {}, AnyAction> {
@@ -27,7 +29,7 @@ export function addTask(task: TaskType): ThunkAction<Promise<any>, MainState, {}
 
 export function getTasks(): ThunkAction<Promise<any>, MainState, {}, AnyAction> {
     return (dispatch: Dispatch, getState: () => MainState) => {
-        return axios.get<ServerTask>(apiConstants.TASKS_GET, {withCredentials: true})
+        return axios.get<RawTask[]>(apiConstants.TASKS_GET, {withCredentials: true})
             .then(res => {
                 const tasks = processTasks(res.data)
                 dispatch({type: GET_TASKS_SUCCESS, payload: tasks})
@@ -36,12 +38,12 @@ export function getTasks(): ThunkAction<Promise<any>, MainState, {}, AnyAction> 
     }
 }
 
-function processTasks(tasks: ServerTask) {
+function processTasks(tasks: RawTask[]) {
     console.log(tasks)
     const newTasks: Tasks = {}
-    for (const val of Object.values(tasks)) {
-        newTasks[val.taskId] = {
-            name: val.taskId,
+    for (const val of tasks) {
+        newTasks[val.name] = {
+            name: val.name,
             duration: Duration.fromISO(val.duration),
             deadline: val.deadline ? DateTime.fromISO(val.deadline) : undefined
         }
@@ -50,7 +52,7 @@ function processTasks(tasks: ServerTask) {
 }
 
 function transformTaskForPost(task: TaskType) {
-    return {taskId: task.name, duration: task.duration.toISO(), deadline: task.deadline ? task!.deadline.toISO() : null}
+    return {name: task.name, duration: task.duration.toISO(), deadline: task.deadline ? task!.deadline.toISO() : null}
 }
 
 function addTaskSuccess(task: TaskType) {
