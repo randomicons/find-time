@@ -2,6 +2,8 @@ import {
     ADD_TASK_FAILED,
     ADD_TASK_SUCCESS,
     CREATE_USER_FAILED,
+    DEL_TASK_FAILED,
+    DEL_TASK_SUCCESS,
     GET_TASKS_FAILED,
     GET_TASKS_SUCCESS,
     LOG_OFF,
@@ -26,9 +28,10 @@ const initState: MainState = {
 
 function rootReducer(state: MainState = initState, action: any) {
     switch (action.type) {
-        case ADD_TASK_SUCCESS:
-            const {name} = action.payload
+        case ADD_TASK_SUCCESS: {
+            let {name} = action.payload
             return Object.assign({}, state, {tasks: {...state.tasks, [name]: action.payload}})
+        }
         case GET_TASKS_SUCCESS:
             return Object.assign({}, state, {tasks: action.payload})
         case SCHEDULE_TASKS:
@@ -40,9 +43,16 @@ function rootReducer(state: MainState = initState, action: any) {
         case LOG_OFF:
             deleteCookie(TOKEN)
             return Object.assign({}, state, {loggedIn: false})
+        case DEL_TASK_SUCCESS: {
+            let name = action.payload.name
+            let newTasks = Object.assign({}, state.tasks)
+            delete newTasks[name]
+            return Object.assign({}, state, {tasks: newTasks})
+        }
         case CREATE_USER_FAILED:
         case LOGIN_FAILED:
         case GET_TASKS_FAILED:
+        case DEL_TASK_FAILED:
         case ADD_TASK_FAILED:
             console.log(action.err)
             break

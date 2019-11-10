@@ -2,14 +2,22 @@ import React, {Component, SyntheticEvent} from 'react'
 import {TaskType} from "../../interfaces";
 import {DateTime, Duration} from "luxon";
 import styles from "./Task.module.scss"
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {deleteTask} from "../../actions/tasks";
 
-export type TaskState = { name: string, duration: Duration, deadline?: DateTime, hovered: boolean }
+export type TaskState = { name: string, duration: Duration, deadline?: DateTime }
 
 
-class Task extends Component<TaskType, TaskState> {
-    constructor(props: TaskType) {
+class Task extends Component<TaskType & { dispatch: Dispatch }, TaskState & { hovered: boolean }> {
+    constructor(props: TaskType & { dispatch: Dispatch }) {
         super(props)
         this.state = {...this.props, hovered: false}
+    }
+
+    deleteTask = () => {
+        let {hovered, ...task} = this.state
+        this.props.dispatch<any>(deleteTask(task))
     }
 
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -45,9 +53,9 @@ class Task extends Component<TaskType, TaskState> {
                          onChange={this.validateDur}/>
                 </label>
             }
-            {this.state.hovered && <button className={styles.delete}>x</button>}
+            {this.state.hovered && <button onClick={this.deleteTask} className={styles.delete}>x</button>}
         </div>
     }
 }
 
-export default Task
+export default connect()(Task)

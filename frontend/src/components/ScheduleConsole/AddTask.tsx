@@ -17,7 +17,6 @@ class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskState
         this.state = {
             name: "",
             duration: Duration.fromObject({}),
-            hovered: false
         }
     }
 

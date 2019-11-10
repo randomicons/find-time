@@ -1,4 +1,11 @@
-import {ADD_TASK_FAILED, ADD_TASK_SUCCESS, GET_TASKS_FAILED, GET_TASKS_SUCCESS} from "../constants/action"
+import {
+    ADD_TASK_FAILED,
+    ADD_TASK_SUCCESS,
+    DEL_TASK_FAILED,
+    DEL_TASK_SUCCESS,
+    GET_TASKS_FAILED,
+    GET_TASKS_SUCCESS
+} from "../constants/action"
 import apiConstants from '../constants/api'
 import axios, {AxiosResponse} from 'axios'
 import {AnyAction, Dispatch} from 'redux'
@@ -11,6 +18,19 @@ interface RawTask {
     name: string,
     duration: string,
     deadline?: string,
+}
+
+export function deleteTask(task: TaskType) {
+    return (dispatch: Dispatch) => {
+        return axios.post(apiConstants.TASKS_DELETE, transformTaskForPost(task), {withCredentials: true})
+            .then(res => {
+                    if (res.data.err) {
+                        return dispatch({type: DEL_TASK_FAILED, err: res.data.err})
+                    }
+                    return dispatch({type: DEL_TASK_SUCCESS, payload: task})
+                }
+            )
+    }
 }
 
 export function addTask(task: TaskType): ThunkAction<Promise<any>, MainState, {}, AnyAction> {

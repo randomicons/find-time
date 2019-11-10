@@ -16,7 +16,7 @@ taskRoutes.post('/add', checkAuth, async (req: Request & { user: User }, res: Re
 })
 
 
-taskRoutes.post('/add', checkAuth, async (req: Request & { user: User }, res: Response) => {
+taskRoutes.post('/delete', checkAuth, async (req: Request & { user: User }, res: Response) => {
     const {err} = await deleteTask(req.body as Task, req.user.email)
     if (err) {
         res.status(401).send(err)
