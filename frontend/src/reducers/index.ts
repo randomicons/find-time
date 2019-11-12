@@ -47,7 +47,10 @@ function rootReducer(state: MainState = initState, action: any) {
             let name = action.payload.name
             let newTasks = Object.assign({}, state.tasks)
             delete newTasks[name]
-            return Object.assign({}, state, {tasks: newTasks})
+            return Object.assign({}, state, {
+                tasks: newTasks,
+                schedTasks: state.schedTasks.filter((val) => val.name !== name)
+            })
         }
         case CREATE_USER_FAILED:
         case LOGIN_FAILED:
