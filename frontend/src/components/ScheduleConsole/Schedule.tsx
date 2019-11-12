@@ -1,23 +1,23 @@
 import React from 'react'
-import {connect} from "react-redux"
-import {intervalToStr} from "../../util/date-util"
-import {MainState, STask} from "../../interfaces";
-import styles from './Schedule.module.scss'
+import {MainState, STask} from "../../interfaces"
+import FullCalendar from '@fullcalendar/react'
+import timeGridPlugin from '@fullcalendar/timegrid'
+
+import '@fullcalendar/core/main.css'
+import '@fullcalendar/daygrid/main.css'
+import '@fullcalendar/timegrid/main.css'
+import {connect} from "react-redux";
 
 class Schedule extends React.Component<{ schedTasks: Array<STask> }> {
     render() {
-        const out: Array<any> = []
+        const events: Array<any> = []
         for (const task of this.props.schedTasks) {
-            out.push(
-                <li>{task.name} <span>from </span> {intervalToStr(task.interval)}
-                </li>
+            events.push(
+                {title: task.name, start: task.interval.start.toJSDate(), end: task.interval.end.toJSDate()}
             )
         }
-        return <div className={styles.container}>
-            {
-                this.props.schedTasks && out
-            }
-        </div>
+        return <FullCalendar slotDuration="01:00:00" defaultView="timeGridWeek" plugins={[timeGridPlugin]}
+                             events={events} nowIndicator/>
     }
 }
 
