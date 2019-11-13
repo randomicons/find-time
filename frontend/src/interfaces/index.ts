@@ -1,11 +1,11 @@
 import {DateTime, Duration, Interval} from "luxon";
 
-export type TaskType = {
+export type Task = {
     name: string, duration: Duration, deadline?: DateTime,
 }
 
 export interface Tasks {
-    [name: string]: TaskType
+    [name: string]: Task
 }
 
 export interface MainState {
@@ -27,3 +27,5 @@ export interface STask {
     interval: Interval,
     deadline?: DateTime
 }
+
+export type TimerStates = "break" | "work" | "none"

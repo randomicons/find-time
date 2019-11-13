@@ -11,7 +11,7 @@ import axios, {AxiosResponse} from 'axios'
 import {AnyAction, Dispatch} from 'redux'
 import {ThunkAction} from "redux-thunk";
 import {schedule} from "./schedule";
-import {MainState, Tasks, TaskType} from "../interfaces";
+import {MainState, Tasks, Task} from "../interfaces";
 import {DateTime, Duration} from "luxon";
 
 interface RawTask {
@@ -20,7 +20,7 @@ interface RawTask {
     deadline?: string,
 }
 
-export function deleteTask(task: TaskType) {
+export function deleteTask(task: Task) {
     return (dispatch: Dispatch) => {
         return axios.post(apiConstants.TASKS_DELETE, transformTaskForPost(task), {withCredentials: true})
             .then(res => {
@@ -33,7 +33,7 @@ export function deleteTask(task: TaskType) {
     }
 }
 
-export function addTask(task: TaskType): ThunkAction<Promise<any>, MainState, {}, AnyAction> {
+export function addTask(task: Task): ThunkAction<Promise<any>, MainState, {}, AnyAction> {
     return (dispatch: Dispatch, getState: () => MainState) => {
         return axios.post(apiConstants.TASKS_ADD, transformTaskForPost(task), {withCredentials: true})
             .then((res: AxiosResponse<{ err?: string }>) => {
@@ -41,7 +41,7 @@ export function addTask(task: TaskType): ThunkAction<Promise<any>, MainState, {}
                     return dispatch({type: ADD_TASK_FAILED, err: res.data.err})
                 }
                 dispatch(addTaskSuccess(task))
-                const tasks: Array<TaskType> = (Object.values(getState().tasks))
+                const tasks: Array<Task> = (Object.values(getState().tasks))
                 return dispatch(schedule(tasks, getState().opts))
             }).catch(err => dispatch({type: ADD_TASK_FAILED, err}))
     }
@@ -71,11 +71,11 @@ function processTasks(tasks: RawTask[]) {
     return newTasks
 }
 
-function transformTaskForPost(task: TaskType) {
+function transformTaskForPost(task: Task) {
     return {name: task.name, duration: task.duration.toISO(), deadline: task.deadline ? task!.deadline.toISO() : null}
 }
 
-function addTaskSuccess(task: TaskType) {
+function addTaskSuccess(task: Task) {
     return {type: ADD_TASK_SUCCESS, payload: task}
 }
 

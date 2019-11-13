@@ -1,5 +1,5 @@
 import React, {Component, SyntheticEvent} from 'react'
-import {TaskType} from "../../interfaces";
+import {Task} from "../../interfaces";
 import {DateTime, Duration} from "luxon";
 import styles from "./Task.module.scss"
 import {connect} from "react-redux";
@@ -9,8 +9,8 @@ import {deleteTask} from "../../actions/tasks";
 export type TaskState = { name: string, duration: Duration, deadline?: DateTime }
 
 
-class Task extends Component<TaskType & { dispatch: Dispatch }, TaskState & { hovered: boolean }> {
-    constructor(props: TaskType & { dispatch: Dispatch }) {
+class TaskComponent extends Component<Task & { dispatch: Dispatch }, TaskState & { hovered: boolean }> {
+    constructor(props: Task & { dispatch: Dispatch }) {
         super(props)
         this.state = {...this.props, hovered: false}
     }
@@ -58,4 +58,4 @@ class Task extends Component<TaskType & { dispatch: Dispatch }, TaskState & { ho
     }
 }
 
-export default connect()(Task)
+export default connect()(TaskComponent)

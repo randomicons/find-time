@@ -1,6 +1,6 @@
 import {DateTime, Duration, Interval} from "luxon";
 import {SCHEDULE_TASKS} from "../constants/action";
-import {SchedOpts, STask, TaskType} from "../interfaces";
+import {SchedOpts, STask, Task} from "../interfaces";
 
 /**
  * TODO Call this occasionally in the background?
@@ -8,7 +8,7 @@ import {SchedOpts, STask, TaskType} from "../interfaces";
  * @param opts
  * @param curTime
  */
-export function schedule(tasks: Array<TaskType>, opts: SchedOpts, curTime: DateTime = DateTime.local()) {
+export function schedule(tasks: Array<Task>, opts: SchedOpts, curTime: DateTime = DateTime.local()) {
     const {breakTime, endTime, startTime} = opts
     // Currently only support hour and not minutes for start and end times
     if (curTime.hour < startTime.hour) {
@@ -16,7 +16,7 @@ export function schedule(tasks: Array<TaskType>, opts: SchedOpts, curTime: DateT
     }
 
     // Sort by deadline
-    tasks.sort((a: TaskType, b: TaskType) => {
+    tasks.sort((a: Task, b: Task) => {
         const deadA = a.deadline
         const deadB = b.deadline
         if (deadA == null && deadB == null) return 0
