@@ -16,7 +16,7 @@ class Schedule extends React.Component<{ schedTasks: Array<STask> }> {
                 {title: task.name, start: task.interval.start.toJSDate(), end: task.interval.end.toJSDate()}
             )
         }
-        return <FullCalendar slotDuration="01:00:00" defaultView="timeGridWeek" plugins={[timeGridPlugin]}
+        return <FullCalendar slotDuration="00:30:00" defaultView="timeGridWeek" plugins={[timeGridPlugin]}
                              events={events} nowIndicator/>
     }
 }
