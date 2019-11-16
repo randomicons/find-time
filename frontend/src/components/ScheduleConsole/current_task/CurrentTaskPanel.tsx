@@ -4,9 +4,8 @@ import {connect} from "react-redux";
 import Timer from "./Timer";
 
 class CurrentTaskPanel extends React.Component<{ task: STask, workTime: number, breakTime: number },
-    { curTimeSpent: number, timerOn: TimerStates }> {
+    { timerOn: TimerStates }> {
     state = {
-        curTimeSpent: 0,
         timerOn: "none" as TimerStates
     }
 
@@ -46,26 +45,27 @@ class CurrentTaskPanel extends React.Component<{ task: STask, workTime: number, 
 
 
     render() {
-        if (this.state.timerOn === "break")
-            return <Timer maxTime={this.props.workTime} onDone={() => {
-                this.setState({timerOn: "none"})
-            }}>
-                <span>Break</span>
-            </Timer>
-        else if (this.state.timerOn === "work") {
-            return <Timer maxTime={this.props.breakTime} onDone={() => {
+        return <> {this.state.timerOn === "break" &&
+        <Timer maxTime={this.props.breakTime} onDone={() => {
+            this.setState({timerOn: "none"})
+        }}>
+          <span>Break</span>
+        </Timer>
+        }
+            {this.state.timerOn === "work" && <Timer maxTime={this.props.workTime} onDone={() => {
                 this.setState({timerOn: "break"})
             }}>
-                <span>{this.props.task.name}</span>
+              <span>{this.props.task.name}</span>
             </Timer>
-        } else {
-            return <div onClick={() => {
-                this.setState({timerOn: "work"})
-            }}>
-                <span>Start {this.props.task.name}</span>
-            </div>
-        }
-
+            }
+            {
+                this.state.timerOn === "none" && <div onClick={() => {
+                    this.setState({timerOn: "work"})
+                }}>
+                  <span>Start {this.props.task.name}</span>
+                </div>
+            }
+        </>
     }
 }
 

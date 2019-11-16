@@ -1,34 +1,43 @@
 import React from 'react'
 
-export default class Timer extends React.Component<{ maxTime: number, onDone: Function }, { timerOn: boolean, curTime: number, timer: number }> {
+export default class Timer extends React.Component<{ maxTime: number, onDone: Function }, { lapsed: number }> {
     constructor(props: any) {
         super(props)
         this.state = {
-            timerOn: true,
-            curTime: 0,
-            timer: setInterval(this.timerFunc, 1000)
+            lapsed: 0,
         }
     }
 
-    timerFunc = (handler: NodeJS.Timeout) => {
-        if (this.props.maxTime <= this.state.curTime) {
+    timer: NodeJS.Timeout | null = null
+
+    componentDidMount() {
+        this.timer = setInterval(this.timerFunc, 1000)
+    }
+
+    componentWillUnmount(): void {
+        console.log(this.timer + "dismount");
+        clearInterval(this.timer!)
+        // this.setState({timerOn: false, timer: -1, curTime: 0})
+    }
+
+    timerFunc = () => {
+        if (this.props.maxTime <= this.state.lapsed) {
             this.props.onDone()
-            clearInterval(handler)
-            this.setState({timerOn: false, timer: -1, curTime: 0})
+        } else {
+            this.setState((state) => ({lapsed: state.lapsed + 1}))
         }
-        this.setState((state) => ({curTime: state.curTime + 1}))
     }
 
     toggleTimer = () => {
-        if (this.state.timerOn) {
-            clearInterval(this.state.timer)
-            this.setState({timerOn: false, timer: -1})
+        if (this.timer) {
+            clearInterval(this.timer)
+            this.timer = null
         } else
-            this.setState({timerOn: true, timer: setInterval(this.timerFunc, 1000)})
+            this.timer = setInterval(this.timerFunc, 1000)
     }
 
 
-    percentDone = () => (this.state.curTime / this.props.maxTime) * 100
+    percentDone = () => (this.state.lapsed / this.props.maxTime) * 100
 
     render() {
         return <div onClick={this.toggleTimer}
