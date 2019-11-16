@@ -1,10 +1,11 @@
 import React from 'react'
 
-export default class Timer extends React.Component<{ maxTime: number, onDone: Function }, { lapsed: number }> {
+export default class Timer extends React.Component<{ maxTime: number, onDone: Function }, { lapsed: number, loaded: boolean }> {
     constructor(props: any) {
         super(props)
         this.state = {
             lapsed: 0,
+            loaded: false
         }
     }
 
@@ -12,6 +13,7 @@ export default class Timer extends React.Component<{ maxTime: number, onDone: Fu
 
     componentDidMount() {
         this.timer = setInterval(this.timerFunc, 1000)
+        this.setState({loaded: true})
     }
 
     componentWillUnmount(): void {
@@ -40,13 +42,15 @@ export default class Timer extends React.Component<{ maxTime: number, onDone: Fu
     percentDone = () => (this.state.lapsed / this.props.maxTime) * 100
 
     render() {
-        return <div onClick={this.toggleTimer}
-                    style={{
-                        background: `linear-gradient(90deg, rgb(227, 248, 248) ${this.percentDone()}%, rgb(252, 228, 232) ${this.percentDone()}%)`,
-                        width: "100px",
-                        height: "100px"
-                    }}>
+        return <div
+            style={{
+                background: `linear-gradient(90deg, rgb(227, 248, 248) ${this.percentDone()}%, rgb(252, 228, 232) ${this.percentDone()}%)`,
+                width: "100px",
+                height: "100px"
+            }}>
             {this.props.children}
+            {this.state.loaded && <button onClick={this.toggleTimer}>{this.timer ? "Pause" : "Play"}</button>}
+            <button onClick={() => this.props.onDone()}>Stop</button>
         </div>
     }
 }
