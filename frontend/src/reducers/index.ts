@@ -1,6 +1,7 @@
 import {
     ADD_TASK_FAILED,
     ADD_TASK_SUCCESS,
+    CHANGE_TASK_DUR,
     CREATE_USER_FAILED,
     DEL_TASK_FAILED,
     DEL_TASK_SUCCESS,
@@ -15,6 +16,7 @@ import {deleteCookie, getCookie} from "../util";
 import {TOKEN} from '../constants/'
 import {createDurMin, createTimeHour} from "../util/date-util";
 import {MainState} from "../interfaces";
+import {schedule} from "../actions/schedule";
 
 
 const initState: MainState = {
@@ -52,6 +54,11 @@ function rootReducer(state: MainState = initState, action: any) {
                 schedTasks: state.schedTasks.filter((val) => val.name !== name)
             })
         }
+        case CHANGE_TASK_DUR:
+            const {name, duration} = action.payload
+            console.log(duration)
+            state.tasks[name].duration = duration
+            return Object.assign({}, state, {schedTasks: schedule(Object.values(state.tasks), state.opts).payload})
         case CREATE_USER_FAILED:
         case LOGIN_FAILED:
         case GET_TASKS_FAILED:
