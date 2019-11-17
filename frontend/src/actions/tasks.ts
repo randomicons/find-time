@@ -11,14 +11,9 @@ import axios, {AxiosResponse} from 'axios'
 import {AnyAction, Dispatch} from 'redux'
 import {ThunkAction} from "redux-thunk";
 import {schedule} from "./schedule";
-import {MainState, Tasks, Task} from "../interfaces";
+import {MainState, RawTask, Task, Tasks} from "../interfaces";
 import {DateTime, Duration} from "luxon";
 
-interface RawTask {
-    name: string,
-    duration: string,
-    deadline?: string,
-}
 
 export function deleteTask(task: Task) {
     return (dispatch: Dispatch) => {
@@ -62,7 +57,8 @@ function processTasks(tasks: RawTask[]) {
     console.log(tasks)
     const newTasks: Tasks = {}
     for (const val of tasks) {
-        newTasks[val.name] = {
+        newTasks[val.id] = {
+            id: val.id,
             name: val.name,
             duration: Duration.fromISO(val.duration),
             deadline: val.deadline ? DateTime.fromISO(val.deadline) : undefined
@@ -72,7 +68,12 @@ function processTasks(tasks: RawTask[]) {
 }
 
 function transformTaskForPost(task: Task) {
-    return {name: task.name, duration: task.duration.toISO(), deadline: task.deadline ? task!.deadline.toISO() : null}
+    return {
+        id: task.id,
+        name: task.name,
+        duration: task.duration.toISO(),
+        deadline: task.deadline ? task!.deadline.toISO() : null
+    }
 }
 
 function addTaskSuccess(task: Task) {

@@ -17,7 +17,8 @@ class ListTasks extends React.Component<{ tasks: Tasks, loggedIn: boolean, dispa
                 <ul>
                     {
                         Object.values(this.props.tasks).map(val =>
-                            <li key={val.name}><Task name={val.name} duration={val.duration} deadline={val.deadline}/>
+                            <li key={val.id}><Task id={val.id} name={val.name} duration={val.duration}
+                                                   deadline={val.deadline}/>
                             </li>
                         )
                     }

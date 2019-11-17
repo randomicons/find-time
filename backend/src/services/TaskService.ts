@@ -13,7 +13,7 @@ export async function addTask(task: Task, userEmail: string): Promise<{ err?: st
 
 export async function deleteTask(task: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-        const response = await docClient.delete(taskModel.getTask(userEmail, task.name)).promise()
+        const response = await docClient.delete(taskModel.getTask(userEmail, task.id)).promise()
         console.log(response)
     } catch (err) {
         return {err}
@@ -24,14 +24,18 @@ export async function deleteTask(task: Task, userEmail: string): Promise<{ err?:
 export async function getTasks(userEmail: string): Promise<{ err?: string, data?: Task[] }> {
     try {
         let tempData = await docClient.query(taskModel.getAllTasks(userEmail)).promise()
-        // TODO is this even an error if there are no tasks?
         if (!tempData.Items) {
-            return {err: "No tasks found"}
+            return {data: []}
         }
         const data: Task[] = []
-        tempData.Items!.forEach((val) => {
+        tempData.Items.forEach((val) => {
             delete val.userEmail
-            data.push({name: val.type.split("_").slice(1).join("_"), deadline: val.deadline, duration: val.duration})
+            data.push({
+                id: val.type.split("_").slice(1).join("_"),
+                name: val.name,
+                deadline: val.deadline,
+                duration: val.duration
+            })
         })
         console.log(data)
         return {data}

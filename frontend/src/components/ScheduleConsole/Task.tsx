@@ -17,7 +17,7 @@ class TaskComponent extends Component<Task & { dispatch: Dispatch }, TaskState &
 
     deleteTask = () => {
         let {hovered, ...task} = this.state
-        this.props.dispatch<any>(deleteTask(task))
+        this.props.dispatch<any>(deleteTask({...task, id: this.props.id}))
     }
 
     validateDur = (event: SyntheticEvent<HTMLInputElement>) => {

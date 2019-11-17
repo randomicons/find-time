@@ -19,7 +19,8 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2",
-    "@fullcalendar/interaction": "latest"
+    "@fullcalendar/interaction": "latest",
+    "uuidv4": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

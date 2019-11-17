@@ -1,11 +1,11 @@
 import {DateTime, Duration, Interval} from "luxon";
 
 export type Task = {
-    name: string, duration: Duration, deadline?: DateTime,
+    id: string, name: string, duration: Duration, deadline?: DateTime,
 }
 
 export interface Tasks {
-    [name: string]: Task
+    [id: string]: Task
 }
 
 export interface MainState {
@@ -22,7 +22,15 @@ export interface SchedOpts {
     maxTaskTime: Duration
 }
 
+export interface RawTask {
+    name: string,
+    id: string,
+    duration: string,
+    deadline?: string,
+}
+
 export interface STask {
+    id: string,
     name: string,
     interval: Interval,
     deadline?: DateTime

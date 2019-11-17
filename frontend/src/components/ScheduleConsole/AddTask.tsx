@@ -7,6 +7,7 @@ import {DateTime, Duration} from "luxon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './AddTask.module.scss'
+import {uuid} from "uuidv4";
 
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
@@ -27,6 +28,7 @@ class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskState
         event.preventDefault()
         if (this.state.name != null && this.state.duration != null) {
             this.props.dispatch<any>(addTask({
+                id: uuid(),
                 name: this.state.name,
                 duration: this.state.duration,
                 deadline: this.state.deadline

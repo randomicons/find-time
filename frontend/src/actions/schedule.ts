@@ -9,7 +9,7 @@ import {SchedOpts, STask, Task} from "../interfaces";
  * @param curTime
  */
 export function schedule(tasks: Array<Task>, opts: SchedOpts, curTime: DateTime = DateTime.local()) {
-    const {breakTime, endTime, startTime} = opts
+    const {endTime, startTime} = opts
     // Currently only support hour and not minutes for start and end times
     if (curTime.hour < startTime.hour) {
         curTime = curTime.set({hour: startTime.hour})
@@ -36,8 +36,9 @@ export function schedule(tasks: Array<Task>, opts: SchedOpts, curTime: DateTime 
                 day: startTime.day + 1
             })
         }
+        console.log(val)
         let dur = val.duration
-        sched.push({name: val.name, interval: Interval.after(curTime, dur), deadline: val.deadline})
+        sched.push({id: val.id, name: val.name, interval: Interval.after(curTime, dur), deadline: val.deadline})
         curUsedTime = curUsedTime.plus(dur)
         curTime = curTime.plus(dur)
     }

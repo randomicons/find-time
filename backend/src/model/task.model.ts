@@ -27,20 +27,31 @@ export function createTask(userEmail: string, taskDetails: Task) {
     return {
         TableName: process.env.DB_TABLE!,
         Item: {
-            userEmail, duration: taskDetails.duration, deadline: taskDetails.deadline,
-            type: dbTypes.task + "_" + taskDetails.name
+            userEmail, duration: taskDetails.duration, deadline: taskDetails.deadline, name: taskDetails.name,
+            type: dbTypes.task + "_" + taskDetails.id
         },
         ConditionExpression: "attribute_not_exists(taskName)"
     }
 }
 
-export function getTask(userEmail: string, taskName: string) {
+export function getTask(userEmail: string, taskId: string) {
     return {
         TableName: process.env.DB_TABLE!,
         Key: {
             userEmail,
-            type: dbTypes.task + "_" + taskName
+            type: dbTypes.task + "_" + taskId
         }
+    }
+}
+
+export function updateTask(userEmail: string, taskInput: Task) {
+    return {
+        TableName: process.env.DB_TABLE!,
+        Key: {
+            userEmail,
+            type: dbTypes.task + "_" + taskInput.id
+        },
+        UpdateExpression: "set "
     }
 }
 

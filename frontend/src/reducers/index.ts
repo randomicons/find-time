@@ -31,8 +31,8 @@ const initState: MainState = {
 function rootReducer(state: MainState = initState, action: any) {
     switch (action.type) {
         case ADD_TASK_SUCCESS: {
-            let {name} = action.payload
-            return Object.assign({}, state, {tasks: {...state.tasks, [name]: action.payload}})
+            let {id} = action.payload
+            return Object.assign({}, state, {tasks: {...state.tasks, [id]: action.payload}})
         }
         case GET_TASKS_SUCCESS:
             return Object.assign({}, state, {tasks: action.payload})
@@ -46,18 +46,17 @@ function rootReducer(state: MainState = initState, action: any) {
             deleteCookie(TOKEN)
             return Object.assign({}, state, {loggedIn: false})
         case DEL_TASK_SUCCESS: {
-            let name = action.payload.name
+            let id = action.payload.id
             let newTasks = Object.assign({}, state.tasks)
-            delete newTasks[name]
+            delete newTasks[id]
             return Object.assign({}, state, {
                 tasks: newTasks,
-                schedTasks: state.schedTasks.filter((val) => val.name !== name)
+                schedTasks: state.schedTasks.filter((val) => val.id !== id)
             })
         }
         case CHANGE_TASK_DUR:
-            const {name, duration} = action.payload
-            console.log(duration)
-            state.tasks[name].duration = duration
+            const {id, duration} = action.payload
+            state.tasks[id].duration = duration
             return Object.assign({}, state, {schedTasks: schedule(Object.values(state.tasks), state.opts).payload})
         case CREATE_USER_FAILED:
         case LOGIN_FAILED:
