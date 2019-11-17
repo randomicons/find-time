@@ -21,6 +21,17 @@ export async function deleteTask(task: Task, userEmail: string): Promise<{ err?:
     return {}
 }
 
+
+export async function updateTask(task: Task, userEmail: string): Promise<{ err?: string }> {
+    try {
+        const response = await docClient.delete(taskModel.updateTask(userEmail, task)).promise()
+        console.log(response)
+    } catch (err) {
+        return {err}
+    }
+    return {}
+}
+
 export async function getTasks(userEmail: string): Promise<{ err?: string, data?: Task[] }> {
     try {
         let tempData = await docClient.query(taskModel.getAllTasks(userEmail)).promise()
