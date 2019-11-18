@@ -4,7 +4,9 @@ import {
     DEL_TASK_FAILED,
     DEL_TASK_SUCCESS,
     GET_TASKS_FAILED,
-    GET_TASKS_SUCCESS
+    GET_TASKS_SUCCESS,
+    UPDATE_TASK_FAIL,
+    UPDATE_TASK_SUCCESS
 } from "../constants/action"
 import apiConstants from '../constants/api'
 import axios, {AxiosResponse} from 'axios'
@@ -23,6 +25,19 @@ export function deleteTask(task: Task) {
                         return dispatch({type: DEL_TASK_FAILED, err: res.data.err})
                     }
                     return dispatch({type: DEL_TASK_SUCCESS, payload: task})
+                }
+            )
+    }
+}
+
+export function updateTask(task: Task) {
+    return (dispatch: Dispatch) => {
+        return axios.post(apiConstants.TASKS_UPDATE, transformTaskForPost(task), {withCredentials: true})
+            .then(res => {
+                    if (res.data.err) {
+                        return dispatch({type: UPDATE_TASK_FAIL, err: res.data.err})
+                    }
+                    return dispatch({type: UPDATE_TASK_SUCCESS, payload: task})
                 }
             )
     }

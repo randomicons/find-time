@@ -10,7 +10,8 @@ import {
     LOG_OFF,
     LOGIN_FAILED,
     LOGIN_SUCCESS,
-    SCHEDULE_TASKS
+    SCHEDULE_TASKS,
+    UPDATE_TASK_SUCCESS
 } from "../constants/action"
 import {deleteCookie, getCookie} from "../util";
 import {TOKEN} from '../constants/'
@@ -54,10 +55,18 @@ function rootReducer(state: MainState = initState, action: any) {
                 schedTasks: state.schedTasks.filter((val) => val.id !== id)
             })
         }
-        case CHANGE_TASK_DUR:
+        case CHANGE_TASK_DUR: {
             const {id, duration} = action.payload
             state.tasks[id].duration = duration
             return Object.assign({}, state, {schedTasks: schedule(Object.values(state.tasks), state.opts).payload})
+        }
+        case UPDATE_TASK_SUCCESS: {
+            const task = action.payload
+            state.tasks[task.id] = task
+            const {id, duration} = task
+            state.tasks[id].duration = duration
+            return Object.assign({}, state, {schedTasks: schedule(Object.values(state.tasks), state.opts).payload})
+        }
         case CREATE_USER_FAILED:
         case LOGIN_FAILED:
         case GET_TASKS_FAILED:
@@ -65,6 +74,8 @@ function rootReducer(state: MainState = initState, action: any) {
         case ADD_TASK_FAILED:
             console.log(action.err)
             break
+        default:
+            console.log(action.err)
 
     }
 

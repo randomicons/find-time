@@ -2,7 +2,7 @@ import React, {SyntheticEvent} from 'react'
 import {addTask} from "../../actions/tasks"
 import {connect} from 'react-redux'
 import {Dispatch} from "redux";
-import {TaskState} from "./Task";
+import {TaskInput} from "./Task";
 import {DateTime, Duration} from "luxon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,7 +12,7 @@ import {uuid} from "uuidv4";
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 
-class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskState> {
+class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskInput> {
     constructor(props: { dispatch: Dispatch }) {
         super(props)
         this.state = {

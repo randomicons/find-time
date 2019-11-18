@@ -13,8 +13,7 @@ export async function addTask(task: Task, userEmail: string): Promise<{ err?: st
 
 export async function deleteTask(task: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-        const response = await docClient.delete(taskModel.getTask(userEmail, task.id)).promise()
-        console.log(response)
+        await docClient.delete(taskModel.getTask(userEmail, task.id)).promise()
     } catch (err) {
         return {err}
     }
@@ -24,8 +23,7 @@ export async function deleteTask(task: Task, userEmail: string): Promise<{ err?:
 
 export async function updateTask(task: Task, userEmail: string): Promise<{ err?: string }> {
     try {
-        const response = await docClient.delete(taskModel.updateTask(userEmail, task)).promise()
-        console.log(response)
+        await docClient.update(taskModel.updateTask(userEmail, task)).promise()
     } catch (err) {
         return {err}
     }

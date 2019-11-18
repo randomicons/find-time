@@ -5,9 +5,11 @@
   "dependencies": {
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
+    "@fullcalendar/interaction": "latest",
     "@fullcalendar/react": "^4.3.0",
     "@fullcalendar/timegrid": "^4.3.0",
     "axios": "^0.19.0",
+    "lodash": "^4.17.15",
     "luxon": "^1.17.2",
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
@@ -19,7 +21,6 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2",
-    "@fullcalendar/interaction": "latest",
     "uuidv4": "latest"
   },
   "scripts": {
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
+    "@types/lodash": "^4.14.149",
     "@types/luxon": "^1.15.2",
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",

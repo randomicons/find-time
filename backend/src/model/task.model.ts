@@ -51,8 +51,8 @@ export function updateTask(userEmail: string, taskInput: Task) {
             userEmail,
             type: dbTypes.task + "_" + taskInput.id
         },
-        UpdateExpression: "set #name = :name, deadline = :deadline, duration = :duration",
-        ExpressionAttributeNames: {"#name": "name"},
+        UpdateExpression: "set #name = :name, deadline = :deadline, #duration = :duration",
+        ExpressionAttributeNames: {"#name": "name", "#duration": "duration"},
         ExpressionAttributeValues: {
             ":name": taskInput.name,
             ":deadline": taskInput.deadline,

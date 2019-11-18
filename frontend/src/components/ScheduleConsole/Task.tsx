@@ -1,15 +1,19 @@
-import React, {Component, SyntheticEvent} from 'react'
+import React, {ChangeEvent, Component} from 'react'
+import debounce from 'lodash/debounce'
 import {Task} from "../../interfaces";
-import {DateTime, Duration} from "luxon";
 import styles from "./Task.module.scss"
-import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {deleteTask} from "../../actions/tasks";
+import {deleteTask, updateTask} from "../../actions/tasks";
+import {connect} from "react-redux";
+import {DateTime, Duration} from "luxon";
 
-export type TaskState = { name: string, duration: Duration, deadline?: DateTime }
+export interface TaskInput {
+    name: string,
+    deadline?: DateTime,
+    duration: Duration
+}
 
-
-class TaskComponent extends Component<Task & { dispatch: Dispatch }, TaskState & { hovered: boolean }> {
+class TaskComponent extends Component<Task & { dispatch: Dispatch }, TaskInput & { hovered: boolean }> {
     constructor(props: Task & { dispatch: Dispatch }) {
         super(props)
         this.state = {...this.props, hovered: false}
@@ -20,13 +24,33 @@ class TaskComponent extends Component<Task & { dispatch: Dispatch }, TaskState &
         this.props.dispatch<any>(deleteTask({...task, id: this.props.id}))
     }
 
-    validateDur = (event: SyntheticEvent<HTMLInputElement>) => {
-        //TODO: change color on bad value
-        // if (parseInt(event.currentTarget.value) > 0)
-        // this.setState({duration: parseInt(event.currentTarget.value)})
-        // else {
-        //     event.preventDefault()
-        // }
+    validateDur = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value)
+        if (parseInt(event.target.value) > 0)
+            this.setState({duration: Duration.fromObject({minute: parseInt(event.currentTarget.value)})},
+                this.updateTask)
+        else {
+            event.preventDefault()
+        }
+    }
+
+    updateTask = debounce(() => {
+        console.log("debounce name")
+        this.props.dispatch<any>(updateTask({
+            name: this.state.name,
+            duration: this.state.duration,
+            deadline: this.state.deadline,
+            id: this.props.id
+        }))
+    }, 1000)
+
+    validateName = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value) {
+            this.setState({name: event.target.value}, this.updateTask)
+        } else {
+            // TODO: Change so it makes it red instead
+            event.preventDefault()
+        }
     }
 
 
@@ -35,10 +59,10 @@ class TaskComponent extends Component<Task & { dispatch: Dispatch }, TaskState &
     }
 
     render() {
-        const dur = this.props.duration.as("minutes")
+        const dur = this.state.duration.as("minutes")
         return <div className={styles.task} onMouseEnter={this.toggleDelete} onMouseLeave={this.toggleDelete}>
             {/*<input placeholder="name" value={this.props.name} onChange={(e) => this.setState({name: e.target.value})}/>*/}
-            <span> {this.props.name}</span>
+            <input type="text" value={this.state.name} name={"name"} onChange={this.validateName}/>
             <label>
                 takes
                 <input type='number' style={{width: (2 + dur.toString().length) + "ch"}} value={dur}
