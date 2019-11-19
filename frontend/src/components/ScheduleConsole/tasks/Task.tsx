@@ -1,9 +1,9 @@
 import React, {ChangeEvent, Component} from 'react'
 import debounce from 'lodash/debounce'
-import {Task} from "../../interfaces";
+import {Task} from "../../../interfaces";
 import styles from "./Task.module.scss"
 import {Dispatch} from "redux";
-import {deleteTask, updateTask} from "../../actions/tasks";
+import {deleteTask, updateTask} from "../../../actions/tasks";
 import {connect} from "react-redux";
 import {DateTime, Duration} from "luxon";
 

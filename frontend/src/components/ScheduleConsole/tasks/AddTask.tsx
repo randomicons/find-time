@@ -1,5 +1,5 @@
 import React, {SyntheticEvent} from 'react'
-import {addTask} from "../../actions/tasks"
+import {addTask} from "../../../actions/tasks"
 import {connect} from 'react-redux'
 import {Dispatch} from "redux";
 import {TaskInput} from "./Task";

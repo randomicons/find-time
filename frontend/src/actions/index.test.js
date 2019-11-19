@@ -34,7 +34,7 @@ describe("Schedule", () => {
         if (prevInt.abutsStart(val.interval)) {
           prevInt = prevInt.union(val.interval)
         } else {
-          assert(prevInt.toDuration().as("minutes") <= 45, val.name + " task was more than 45 mins continuous")
+          assert(prevInt.toDuration().as("minutes") <= 45, val.name + " tasks was more than 45 mins continuous")
           prevInt = val.interval
         }
       }

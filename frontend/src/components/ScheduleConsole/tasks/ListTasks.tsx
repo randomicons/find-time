@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from "react-redux"
 import AddTask from "./AddTask"
-import {MainState, Tasks} from "../../interfaces";
+import {MainState, Tasks} from "../../../interfaces";
 import {Dispatch} from "redux";
 import {Redirect} from "react-router";
 import Task from './Task';

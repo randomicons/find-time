@@ -21,8 +21,8 @@ import {schedule} from "../actions/schedule";
 
 
 const initState: MainState = {
-    tasks: {}, schedTasks: [], loggedIn: !!getCookie(TOKEN), opts: {
-        startTime: createTimeHour(10),
+    events: {}, tasks: {}, schedTasks: [], loggedIn: !!getCookie(TOKEN), opts: {
+        startTime: createTimeHour(8),
         endTime: createTimeHour(23),
         breakTime: createDurMin(15),
         maxTaskTime: createDurMin(45)

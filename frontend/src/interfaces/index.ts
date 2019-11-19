@@ -4,12 +4,32 @@ export type Task = {
     id: string, name: string, duration: Duration, deadline?: DateTime,
 }
 
+export interface RawTask {
+    name: string,
+    id: string,
+    duration: string,
+    deadline?: string,
+}
+
 export interface Tasks {
     [id: string]: Task
 }
 
+export interface Event {
+    id: string,
+    name: string,
+    duration: Duration,
+    startTime: DateTime,
+}
+
+export interface Events {
+    [id: string]: Event
+}
+
+
 export interface MainState {
     tasks: Tasks
+    events: Events
     schedTasks: Array<STask>
     loggedIn: boolean
     opts: SchedOpts
@@ -20,13 +40,6 @@ export interface SchedOpts {
     endTime: DateTime,
     breakTime: Duration,
     maxTaskTime: Duration
-}
-
-export interface RawTask {
-    name: string,
-    id: string,
-    duration: string,
-    deadline?: string,
 }
 
 export interface STask {

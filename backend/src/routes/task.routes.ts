@@ -11,7 +11,7 @@ taskRoutes.post('/add', checkAuth, async (req: Request & { user: User }, res: Re
     if (err) {
         res.status(401).send(err)
     } else {
-        res.status(200).send("task added")
+        res.status(200).send("tasks added")
     }
 })
 
