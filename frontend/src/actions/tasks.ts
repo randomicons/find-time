@@ -13,8 +13,9 @@ import axios, {AxiosResponse} from 'axios'
 import {AnyAction, Dispatch} from 'redux'
 import {ThunkAction} from "redux-thunk";
 import {schedule} from "./schedule";
-import {MainState, RawTask, Task, Tasks} from "../interfaces";
+import {RawTask, Task, Tasks} from "../interfaces";
 import {DateTime, Duration} from "luxon";
+import {MainState} from "../reducers";
 
 
 export function deleteTask(task: Task) {
@@ -43,7 +44,7 @@ export function updateTask(task: Task) {
     }
 }
 
-export function addTask(task: Task): ThunkAction<Promise<any>, MainState, {}, AnyAction> {
+export function addTask(task: Task) {
     return (dispatch: Dispatch, getState: () => MainState) => {
         return axios.post(apiConstants.TASKS_ADD, transformTaskForPost(task), {withCredentials: true})
             .then((res: AxiosResponse<{ err?: string }>) => {
@@ -51,8 +52,8 @@ export function addTask(task: Task): ThunkAction<Promise<any>, MainState, {}, An
                     return dispatch({type: ADD_TASK_FAILED, err: res.data.err})
                 }
                 dispatch(addTaskSuccess(task))
-                const tasks: Array<Task> = (Object.values(getState().tasks))
-                return dispatch(schedule(tasks, getState().opts))
+                const tasks: Array<Task> = (Object.values(getState().tasks.tasks))
+                return dispatch(schedule(tasks, getState().tasks.opts))
             }).catch(err => dispatch({type: ADD_TASK_FAILED, err}))
     }
 }
@@ -63,7 +64,7 @@ export function getTasks(): ThunkAction<Promise<any>, MainState, {}, AnyAction> 
             .then(res => {
                 const tasks = processTasks(res.data)
                 dispatch({type: GET_TASKS_SUCCESS, payload: tasks})
-                return dispatch(schedule(Object.values(tasks), getState().opts))
+                return dispatch(schedule(Object.values(tasks), getState().tasks.opts))
             }).catch(err => dispatch({type: GET_TASKS_FAILED, err}))
     }
 }

@@ -27,19 +27,23 @@ export interface Events {
 }
 
 
-export interface MainState {
-    tasks: Tasks
-    events: Events
-    schedTasks: Array<STask>
-    loggedIn: boolean
-    opts: SchedOpts
+// export interface MainState {
+//     tasks: Tasks
+//     events: Events
+//     schedTasks: Array<STask>
+//     loggedIn: boolean
+//     opts: SchedOpts
+// }
+
+export interface Action {
+    type: string,
+    payload?: any,
+    err?: string
 }
 
 export interface SchedOpts {
     startTime: DateTime,
     endTime: DateTime,
-    breakTime: Duration,
-    maxTaskTime: Duration
 }
 
 export interface STask {
@@ -47,6 +51,12 @@ export interface STask {
     name: string,
     interval: Interval,
     deadline?: DateTime
+}
+
+export interface SEvent {
+    id: string,
+    name: string,
+    interval: Interval,
 }
 
 export type TimerStates = "break" | "work" | "none"

@@ -1,10 +1,10 @@
 import React, {SyntheticEvent} from 'react'
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
-import {MainState} from "../interfaces";
 import {Dispatch} from "redux";
 import {createUser, login} from "../actions/users";
 import styles from './Login.module.scss'
+import {MainState} from "../reducers";
 
 class Login extends React.Component<{ dispatch: Dispatch, loggedIn: boolean }, { email: string, password: string }> {
 
@@ -47,5 +47,5 @@ class Login extends React.Component<{ dispatch: Dispatch, loggedIn: boolean }, {
 }
 
 export default connect((state: MainState) => {
-    return {loggedIn: state.loggedIn}
+    return {loggedIn: state.users.loggedIn}
 })(Login)
