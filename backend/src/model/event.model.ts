@@ -1,5 +1,5 @@
 import {dbTypes} from "../constants";
-import {Event} from "../types";
+import {Event} from "../interfaces";
 
 export function createEvent(userEmail: string, eventDetails: Event) {
     return {

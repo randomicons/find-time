@@ -1,7 +1,7 @@
 import {checkAuth} from '../middleware/checkAuth'
 import {Request, Response} from 'express'
 import {addTask, deleteTask, getTasks, updateTask} from "../services/TaskService";
-import {Task, User} from "../types";
+import {Task, User} from "../interfaces";
 
 export const taskRoutes = require('express').Router()
 

@@ -2,7 +2,7 @@ import bcrypt = require('bcrypt');
 import jwt = require("jsonwebtoken");
 import * as userModel from "../model/user.model"
 import {docClient} from "../constants";
-import {User} from "../types/"
+import {User} from "../interfaces/"
 
 
 const saltRounds = 10

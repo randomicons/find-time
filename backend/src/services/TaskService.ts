@@ -1,6 +1,6 @@
 import * as taskModel from "../model/task.model"
 import {docClient} from "../constants";
-import {Task} from "../types";
+import {Task} from "../interfaces";
 
 export async function addTask(task: Task, userEmail: string): Promise<{ err?: string }> {
     try {

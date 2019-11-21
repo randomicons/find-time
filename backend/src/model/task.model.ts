@@ -21,7 +21,7 @@
 // }
 
 import {dbTypes} from "../constants";
-import {Task} from "../types";
+import {Task} from "../interfaces";
 
 export function createTask(userEmail: string, taskDetails: Task) {
     return {

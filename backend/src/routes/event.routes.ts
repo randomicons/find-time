@@ -1,7 +1,7 @@
 import {checkAuth} from '../middleware/checkAuth'
 import {Request, Response} from 'express'
 import {addEvent, deleteEvent, getEvents, updateEvent} from "../services/EventService";
-import {Event, User} from "../types";
+import {Event, User} from "../interfaces";
 
 export const eventRoutes = require('express').Router()
 

@@ -3,7 +3,7 @@
  */
 import * as eventModel from "../model/event.model"
 import {docClient} from "../constants";
-import {Event} from "../types";
+import {Event} from "../interfaces";
 
 export async function addEvent(event: Event, userEmail: string): Promise<{ err?: string }> {
     try {
