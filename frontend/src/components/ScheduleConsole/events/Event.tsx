@@ -2,9 +2,9 @@ import React, {ChangeEvent, Component} from 'react'
 import {Event} from "../../../interfaces";
 import styles from "./Event.module.scss"
 import {Dispatch} from "redux";
-import {deleteTask} from "../../../actions/tasks";
 import {connect} from "react-redux";
 import {DateTime, Duration} from "luxon";
+import {deleteEvent} from "../../../actions/events";
 
 export interface EventInput {
     name: string,
@@ -20,7 +20,7 @@ class EventComponent extends Component<Event & { dispatch: Dispatch }, EventInpu
 
     deleteTask = () => {
         let {hovered, ...task} = this.state
-        this.props.dispatch<any>(deleteTask({...task, id: this.props.id}))
+        this.props.dispatch<any>(deleteEvent({...task, id: this.props.id}))
     }
 
     validateDur = (event: ChangeEvent<HTMLInputElement>) => {

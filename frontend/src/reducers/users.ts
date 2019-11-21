@@ -1,9 +1,10 @@
 import {Action} from "../interfaces";
 import {CREATE_USER_FAILED, LOG_OFF, LOGIN_FAILED, LOGIN_SUCCESS} from "../constants/action";
-import {deleteCookie} from "../util";
+import {deleteCookie, getCookie} from "../util";
 import {TOKEN} from "../constants";
 
-export function users(state: { loggedIn: boolean } = {loggedIn: false}, action: Action) {
+
+export function users(state: { loggedIn: boolean } = {loggedIn: !!getCookie(TOKEN)}, action: Action) {
     switch (action.type) {
         case LOGIN_SUCCESS:
             return Object.assign({}, state, {loggedIn: true})

@@ -6,6 +6,7 @@ import express from "express";
 import * as logger from "morgan"
 import * as cookieParser from "cookie-parser"
 import createTable from "../model/DBSchema";
+import {eventRoutes} from "../routes/event.routes";
 
 const AWS = require("aws-sdk");
 
@@ -28,6 +29,7 @@ export default function (app: express.Application) {
     app.use(cookieParser())
     app.use('/users', userRoutes)
     app.use('/tasks', taskRoutes)
+    app.use('/events', eventRoutes)
     constants.init()
     createTable()
 }

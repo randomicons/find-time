@@ -8,7 +8,10 @@ export function createEvent(userEmail: string, eventDetails: Event) {
             userEmail, duration: eventDetails.duration, startTime: eventDetails.startTime, name: eventDetails.name,
             type: dbTypes.event + "_" + eventDetails.id
         },
-        ConditionExpression: "attribute_not_exists(type)"
+        ConditionExpression: "attribute_not_exists(#type)",
+        ExpressionAttributeNames: {
+            "#type": "type"
+        }
     }
 }
 

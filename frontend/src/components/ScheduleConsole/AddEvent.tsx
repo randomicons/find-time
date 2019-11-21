@@ -3,11 +3,12 @@ import {connect} from 'react-redux'
 import {Dispatch} from "redux";
 import {EventInput} from "./events/Event";
 import {DateTime, Duration} from "luxon";
-import DatePicker from "react-datepicker";
+import LuxonUtils from '@date-io/luxon';
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './AddEvent.module.scss'
 import {uuid} from "uuidv4";
 import {addEvent} from "../../actions/events";
+import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
 
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
@@ -19,9 +20,10 @@ class AddTask extends React.Component<{ dispatch: Dispatch }, EventInput> {
         startTime: DateTime.local()
     }
 
-    startTimeChange = (date: Date) => {
-        this.setState({startTime: DateTime.fromJSDate(date)})
+    startTimeChange = (date: any) => {
+        this.setState({startTime: date})
     }
+
     handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
         if (this.state.name != null && this.state.duration != null) {
@@ -69,8 +71,9 @@ class AddTask extends React.Component<{ dispatch: Dispatch }, EventInput> {
             </label>
             <label>
                 at
-                <DatePicker selected={this.state.startTime ? this.state.startTime.toJSDate() : null}
-                            onChange={this.startTimeChange} placeholderText="mm/dd/yyyy"/>
+                <MuiPickersUtilsProvider utils={LuxonUtils}>
+                    <DateTimePicker value={this.state.startTime} onChange={this.startTimeChange}/>
+                </MuiPickersUtilsProvider>
             </label>
             <button type="submit" onClick={this.handleSubmit}>ADD</button>
         </form>

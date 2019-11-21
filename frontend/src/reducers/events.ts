@@ -10,7 +10,7 @@ import {
     UPDATE_EVENT_SUCCESS
 } from "../constants/action"
 import {Action, Events, SEvent} from "../interfaces";
-import {scheduleEvent} from "../actions/schedule";
+import {scheduleEvents} from "../actions/schedule";
 
 const initState = {
     events: {},
@@ -39,14 +39,14 @@ export function events(state: { events: Events, schedEvents: SEvent[] } = initSt
         case CHANGE_EVENT_DUR: {
             const {id, duration} = action.payload
             state.events[id].duration = duration
-            return Object.assign({}, state, {schedEvents: scheduleEvent(Object.values(state.events)).payload})
+            return Object.assign({}, state, {schedEvents: scheduleEvents(Object.values(state.events)).payload})
         }
         case UPDATE_EVENT_SUCCESS: {
             const event = action.payload
             state.events[event.id] = event
             const {id, duration} = event
             state.events[id].duration = duration
-            return Object.assign({}, state, {schedEvents: scheduleEvent(Object.values(state.events)).payload})
+            return Object.assign({}, state, {schedEvents: scheduleEvents(Object.values(state.events)).payload})
         }
         case GET_EVENTS_FAILED:
         case DEL_EVENT_FAILED:
