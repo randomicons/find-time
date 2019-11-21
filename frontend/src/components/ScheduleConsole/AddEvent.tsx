@@ -1,37 +1,35 @@
 import React, {SyntheticEvent} from 'react'
-import {addTask} from "../../../actions/tasks"
 import {connect} from 'react-redux'
 import {Dispatch} from "redux";
-import {TaskInput} from "./Task";
+import {EventInput} from "./events/Event";
 import {DateTime, Duration} from "luxon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styles from './AddTask.module.scss'
+import styles from './AddEvent.module.scss'
 import {uuid} from "uuidv4";
+import {addEvent} from "../../actions/events";
 
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 
-class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskInput> {
-    constructor(props: { dispatch: Dispatch }) {
-        super(props)
-        this.state = {
-            name: "",
-            duration: Duration.fromObject({}),
-        }
+class AddTask extends React.Component<{ dispatch: Dispatch }, EventInput> {
+    state = {
+        name: "",
+        duration: Duration.fromObject({}),
+        startTime: DateTime.local()
     }
 
-    handleDeadlineChange = (date: Date) => {
-        this.setState({deadline: DateTime.fromJSDate(date)})
+    startTimeChange = (date: Date) => {
+        this.setState({startTime: DateTime.fromJSDate(date)})
     }
     handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
         if (this.state.name != null && this.state.duration != null) {
-            this.props.dispatch<any>(addTask({
+            this.props.dispatch<any>(addEvent({
                 id: uuid(),
                 name: this.state.name,
                 duration: this.state.duration,
-                deadline: this.state.deadline
+                startTime: this.state.startTime
             }))
             this.formRef!.reset()
             this.setState({name: "", duration: Duration.fromObject({})})
@@ -70,14 +68,13 @@ class ConnectedAddTask extends React.Component<{ dispatch: Dispatch }, TaskInput
                 minutes
             </label>
             <label>
-                & is due by
-                <DatePicker selected={this.state.deadline ? this.state.deadline.toJSDate() : null}
-                            onChange={this.handleDeadlineChange} placeholderText="mm/dd/yyyy"/>
+                at
+                <DatePicker selected={this.state.startTime ? this.state.startTime.toJSDate() : null}
+                            onChange={this.startTimeChange} placeholderText="mm/dd/yyyy"/>
             </label>
             <button type="submit" onClick={this.handleSubmit}>ADD</button>
         </form>
     }
 }
 
-const AddTask = connect()(ConnectedAddTask)
-export default AddTask
+export default connect()(AddTask)

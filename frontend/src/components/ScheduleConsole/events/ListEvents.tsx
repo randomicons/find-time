@@ -1,10 +1,11 @@
 import React from 'react'
 import {connect} from "react-redux"
-import {Events, MainState} from "../../../interfaces";
+import {Events} from "../../../interfaces";
 import {Dispatch} from "redux";
 import {Redirect} from "react-router";
 import Event from './Event';
 import styles from './ListEvents.module.scss'
+import {MainState} from "../../../reducers";
 
 
 class ListEvents extends React.Component<{ events: Events, loggedIn: boolean, dispatch: Dispatch }> {
@@ -28,7 +29,7 @@ class ListEvents extends React.Component<{ events: Events, loggedIn: boolean, di
 }
 
 const mapStateToProps = (state: MainState) => {
-    return {events: state.events, loggedIn: state.loggedIn}
+    return {events: state.events.events, loggedIn: state.users.loggedIn}
 }
 
 export default connect(mapStateToProps)(ListEvents)

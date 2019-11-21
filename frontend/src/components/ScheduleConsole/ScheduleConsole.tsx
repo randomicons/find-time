@@ -7,14 +7,20 @@ import {getTasks} from "../../actions/tasks";
 import {connect} from "react-redux";
 import styles from './ScheduleConsole.module.scss'
 import CurrentTaskPanel from "./current_task/CurrentTaskPanel";
-import {MainState, STask} from "../../interfaces";
+import {STask} from "../../interfaces";
 import ListEvents from "./events/ListEvents";
+import AddEvent from "./AddEvent";
+import AddTask from "./AddEvent";
+import {MainState} from "../../reducers";
 
 const LogOut = function (props: { dispatch: Dispatch }) {
     return <button onClick={() => props.dispatch({type: LOG_OFF})}>LOG OUT</button>
 }
 
-class ScheduleConsole extends React.Component<{ dispatch: Dispatch, loggedIn: boolean, schedTasks: STask[] }, {}> {
+class ScheduleConsole extends React.Component<{ dispatch: Dispatch, loggedIn: boolean, schedTasks: STask[] }, { addType: "task" | "event" }> {
+    state = {
+        addType: "task" as any
+    }
 
     componentDidMount(): void {
         this.props.dispatch<any>(getTasks())
@@ -28,11 +34,13 @@ class ScheduleConsole extends React.Component<{ dispatch: Dispatch, loggedIn: bo
             <Schedule/>
             <ListTasks/>
             <ListEvents/>
+            {this.state.addType === "event" && <AddEvent/>}
+            {this.state.addType === "task" && <AddTask/>}
         </div>
     }
 }
 
 const mapStateToProps = (state: MainState) => {
-    return {schedTasks: state.schedTasks}
+    return {schedTasks: state.tasks.schedTasks}
 }
 export default connect(mapStateToProps)(ScheduleConsole)

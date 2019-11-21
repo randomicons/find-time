@@ -1,5 +1,5 @@
 import React from 'react'
-import {MainState, STask} from "../../interfaces"
+import {STask} from "../../interfaces"
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 // @ts-ignore
@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import {Duration} from "luxon";
 import {Dispatch} from "redux";
 import {CHANGE_TASK_DUR} from "../../constants/action";
+import {MainState} from "../../reducers";
 
 class Schedule extends React.Component<{ dispatch: Dispatch, schedTasks: Array<STask> }> {
     render() {
@@ -36,7 +37,7 @@ class Schedule extends React.Component<{ dispatch: Dispatch, schedTasks: Array<S
 }
 
 const mapStateToProps = (state: MainState) => {
-    return {schedTasks: state.schedTasks}
+    return {schedTasks: state.tasks.schedTasks}
 }
 export default connect(mapStateToProps)(Schedule)
 
