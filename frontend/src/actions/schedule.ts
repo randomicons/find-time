@@ -1,6 +1,14 @@
 import {DateTime, Duration, Interval} from "luxon";
-import {SCHEDULE_TASKS} from "../constants/action";
-import {SchedOpts, STask, Task} from "../interfaces";
+import {SCHEDULE_EVENTS, SCHEDULE_TASKS} from "../constants/action";
+import {Event, SchedOpts, STask, Task} from "../interfaces";
+
+
+export function scheduleEvent(events: Array<Event>) {
+    return {
+        type: SCHEDULE_EVENTS,
+        payload: events.map(e => ({id: e.id, duration: e.duration, interval: Interval.after(e.startTime, e.duration)}))
+    }
+}
 
 /**
  * TODO Call this occasionally in the background?

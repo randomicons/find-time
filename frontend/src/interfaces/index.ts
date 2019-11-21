@@ -27,6 +27,13 @@ export interface Events {
 }
 
 
+export interface RawEvent {
+    name: string,
+    id: string,
+    duration: string,
+    startTime: string,
+}
+
 // export interface MainState {
 //     tasks: Tasks
 //     events: Events
