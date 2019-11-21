@@ -5,6 +5,13 @@ export interface Task {
     deadline?: string
 }
 
+export interface Event {
+    id: string,
+    name: string,
+    duration: string,
+    startTime: string
+}
+
 export interface User {
     email: string,
     dateCreated: string,
