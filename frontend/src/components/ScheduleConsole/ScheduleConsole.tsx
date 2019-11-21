@@ -12,6 +12,7 @@ import ListEvents from "./events/ListEvents";
 import AddEvent from "./AddEvent";
 import AddTask from "./AddEvent";
 import {MainState} from "../../reducers";
+import {getEvents} from "../../actions/events";
 
 const LogOut = function (props: { dispatch: Dispatch }) {
     return <button onClick={() => props.dispatch({type: LOG_OFF})}>LOG OUT</button>
@@ -23,6 +24,7 @@ class ScheduleConsole extends React.Component<{ dispatch: Dispatch, loggedIn: bo
     }
 
     componentDidMount(): void {
+        this.props.dispatch<any>(getEvents())
         this.props.dispatch<any>(getTasks())
     }
 

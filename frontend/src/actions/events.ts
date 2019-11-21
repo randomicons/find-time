@@ -26,7 +26,7 @@ export function deleteEvent(event: Event) {
                         return dispatch({type: DEL_EVENT_FAILED, err: res.data.err})
                     }
                     dispatch({type: DEL_EVENT_SUCCESS, payload: event})
-                    return dispatch({type: UPDATE_EVENT_SUCCESS, payload: event})
+                return updateSchedule(dispatch, getState)
                 }
             )
     }
@@ -45,9 +45,9 @@ export function updateEvent(event: Event) {
             .then(res => {
                     if (res.data.err) {
                         dispatch({type: UPDATE_EVENT_FAIL, err: res.data.err})
-                        return updateSchedule(dispatch, getState)
                     }
-                    return dispatch({type: UPDATE_EVENT_SUCCESS, payload: event})
+                dispatch({type: UPDATE_EVENT_SUCCESS, payload: event})
+                return updateSchedule(dispatch, getState)
                 }
             )
     }
@@ -72,8 +72,7 @@ export function getEvents(): ThunkAction<Promise<any>, MainState, {}, AnyAction>
             .then(res => {
                 const events = processEvents(res.data)
                 dispatch({type: GET_EVENTS_SUCCESS, payload: events})
-                const tasks = (Object.values(getState().tasks.tasks))
-                return dispatch(schedule(tasks, getState().tasks.opts))
+                return updateSchedule(dispatch, getState)
             }).catch(err => dispatch({type: GET_EVENTS_FAILED, err}))
     }
 }
