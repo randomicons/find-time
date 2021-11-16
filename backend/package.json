@@ -7,7 +7,7 @@
     "test": "lib/test"
   },
   "dependencies": {
-    "aws-sdk": "^2.517.0",
+    "aws-sdk": "^2.814.0",
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.1.0",
