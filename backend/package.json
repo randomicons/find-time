@@ -11,7 +11,7 @@
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.1.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-jwt": "latest",
     "flow-bin": "^0.105.2",
     "jest": "^24.9.0",
